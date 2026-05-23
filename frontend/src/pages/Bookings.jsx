@@ -7,6 +7,8 @@ const Bookings = () => {
   const [rooms, setRooms] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [reviewingRoomId, setReviewingRoomId] = useState(null);
+  const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
 
   useEffect(() => {
     const fetchBookingsAndRooms = async () => {
@@ -78,6 +80,25 @@ const Bookings = () => {
     }
   };
 
+  const handleReviewSubmit = async (e, roomId) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    try {
+      await axios.post('http://localhost:5000/api/reviews', {
+        roomId,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert('Review submitted successfully!');
+      setReviewingRoomId(null);
+      setReviewForm({ rating: 5, comment: '' });
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to submit review');
+    }
+  };
+
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-US', {
@@ -142,19 +163,66 @@ const Bookings = () => {
                     ${booking.totalPrice}
                   </div>
                   {!isCancelled && (
+                    <>
                     <button 
                       className="btn btn-outline" 
                       onClick={() => handleCancel(booking._id)}
-                      style={{ fontSize: '0.9rem', padding: '8px 20px', borderColor: '#ef4444', color: '#f87171' }}
+                      style={{ fontSize: '0.9rem', padding: '8px 20px', borderColor: '#ef4444', color: '#f87171', marginBottom: '10px', width: '100%' }}
                       onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'; }}
                       onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
                     >
                       Cancel Booking
                     </button>
+                    <button 
+                      className="btn btn-outline" 
+                      onClick={() => setReviewingRoomId(booking.roomId)}
+                      style={{ fontSize: '0.9rem', padding: '8px 20px', width: '100%' }}
+                    >
+                      Leave Review
+                    </button>
+                    </>
                   )}
                 </div>
               </div>
-            );
+
+              {reviewingRoomId === booking.roomId && (
+                <div className="glass" style={{ marginTop: '10px', padding: '20px', borderRadius: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                  <form onSubmit={(e) => handleReviewSubmit(e, booking.roomId)} style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                    <div>
+                      <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Rating</label>
+                      <select 
+                        className="input-field" 
+                        value={reviewForm.rating} 
+                        onChange={e => setReviewForm({...reviewForm, rating: Number(e.target.value)})}
+                        style={{ padding: '8px', minWidth: '100px' }}
+                      >
+                        <option value="5">5 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="1">1 Star</option>
+                      </select>
+                    </div>
+                    <div style={{ flex: '1 1 200px' }}>
+                      <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Comment</label>
+                      <input 
+                        type="text" 
+                        required 
+                        className="input-field" 
+                        value={reviewForm.comment}
+                        onChange={e => setReviewForm({...reviewForm, comment: e.target.value})}
+                        placeholder="How was your stay?"
+                        style={{ width: '100%', padding: '8px' }}
+                      />
+                    </div>
+                    <div style={{ marginTop: '25px', display: 'flex', gap: '10px' }}>
+                      <button type="submit" className="btn" style={{ padding: '8px 20px' }}>Submit</button>
+                      <button type="button" onClick={() => setReviewingRoomId(null)} className="btn btn-outline" style={{ padding: '8px 20px' }}>Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              )}
+            </div>
           })}
         </div>
       )}

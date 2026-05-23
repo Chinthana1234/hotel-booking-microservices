@@ -51,6 +51,7 @@ app.use('/api/users', createProxy(process.env.USER_SERVICE_URL, '/api/users'));
 app.use('/api/rooms', createProxy(process.env.ROOM_SERVICE_URL, '/api/rooms'));
 app.use('/api/bookings', createProxy(process.env.BOOKING_SERVICE_URL, '/api/bookings'));
 app.use('/api/payments', createProxy(process.env.PAYMENT_SERVICE_URL, '/api/payments'));
+app.use('/api/reviews', createProxy(process.env.REVIEW_SERVICE_URL, '/api/reviews'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

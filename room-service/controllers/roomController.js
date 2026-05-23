@@ -75,9 +75,28 @@ const updateRoomAvailability = async (req, res) => {
     }
 };
 
+// @desc    Delete a room
+// @route   DELETE /api/rooms/:id
+// @access  Private/Admin
+const deleteRoom = async (req, res) => {
+    try {
+        const room = await Room.findById(req.params.id);
+
+        if (room) {
+            await room.deleteOne();
+            res.json({ message: 'Room removed' });
+        } else {
+            res.status(404).json({ message: 'Room not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getRooms,
     getRoomById,
     createRoom,
-    updateRoomAvailability
+    updateRoomAvailability,
+    deleteRoom
 };

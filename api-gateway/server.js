@@ -28,13 +28,15 @@ const createProxy = (serviceUrl, basePath) => {
                 data: req.body,
                 headers: {
                     ...req.headers,
-                    host: undefined // Prevent host header conflicts
+                    host: undefined, // Prevent host header conflicts
+                    'content-length': undefined // Let Axios recalculate it!
                 }
             });
             
             // Send back the response from the microservice
             res.status(response.status).json(response.data);
         } catch (error) {
+            console.error(`Proxy Error for ${req.method} ${req.url}:`, error.message);
             if (error.response) {
                 // The microservice responded with an error (e.g., 400 Bad Request)
                 res.status(error.response.status).json(error.response.data);

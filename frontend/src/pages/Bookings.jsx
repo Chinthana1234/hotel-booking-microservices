@@ -134,95 +134,97 @@ const Bookings = () => {
             const isCancelled = booking.status === 'Cancelled';
 
             return (
-              <div key={booking._id} className="glass" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', padding: '25px 30px', borderRadius: '16px', gap: '20px' }}>
-                <div style={{ flex: '1 1 300px' }}>
-                  <span className={`tag ${isCancelled ? 'booked' : 'available'}`} style={{ marginBottom: '10px' }}>
-                    {booking.status}
-                  </span>
-                  <h3 style={{ fontSize: '1.6rem', marginBottom: '8px' }}>
-                    {room.type} Suite - #{room.roomNumber}
-                  </h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                    {room.description}
-                  </p>
-                </div>
-
-                <div style={{ flex: '1 1 200px', display: 'flex', gap: '30px', fontSize: '0.95rem' }}>
-                  <div>
-                    <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>Check In</div>
-                    <div style={{ fontWeight: '500' }}>{formatDate(booking.checkInDate)}</div>
+              <div key={booking._id} style={{ display: 'flex', flexDirection: 'column' }}>
+                <div className="glass" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', padding: '25px 30px', borderRadius: '16px', gap: '20px' }}>
+                  <div style={{ flex: '1 1 300px' }}>
+                    <span className={`tag ${isCancelled ? 'booked' : 'available'}`} style={{ marginBottom: '10px' }}>
+                      {booking.status}
+                    </span>
+                    <h3 style={{ fontSize: '1.6rem', marginBottom: '8px' }}>
+                      {room.type} Suite - #{room.roomNumber}
+                    </h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+                      {room.description}
+                    </p>
                   </div>
-                  <div>
-                    <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>Check Out</div>
-                    <div style={{ fontWeight: '500' }}>{formatDate(booking.checkOutDate)}</div>
-                  </div>
-                </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', minWidth: '150px' }}>
-                  <div style={{ fontSize: '1.8rem', fontWeight: '700', color: 'white', marginBottom: '10px' }}>
-                    ${booking.totalPrice}
-                  </div>
-                  {!isCancelled && (
-                    <>
-                    <button 
-                      className="btn btn-outline" 
-                      onClick={() => handleCancel(booking._id)}
-                      style={{ fontSize: '0.9rem', padding: '8px 20px', borderColor: '#ef4444', color: '#f87171', marginBottom: '10px', width: '100%' }}
-                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'; }}
-                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-                    >
-                      Cancel Booking
-                    </button>
-                    <button 
-                      className="btn btn-outline" 
-                      onClick={() => setReviewingRoomId(booking.roomId)}
-                      style={{ fontSize: '0.9rem', padding: '8px 20px', width: '100%' }}
-                    >
-                      Leave Review
-                    </button>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {reviewingRoomId === booking.roomId && (
-                <div className="glass" style={{ marginTop: '10px', padding: '20px', borderRadius: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                  <form onSubmit={(e) => handleReviewSubmit(e, booking.roomId)} style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                  <div style={{ flex: '1 1 200px', display: 'flex', gap: '30px', fontSize: '0.95rem' }}>
                     <div>
-                      <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Rating</label>
-                      <select 
-                        className="input-field" 
-                        value={reviewForm.rating} 
-                        onChange={e => setReviewForm({...reviewForm, rating: Number(e.target.value)})}
-                        style={{ padding: '8px', minWidth: '100px' }}
+                      <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>Check In</div>
+                      <div style={{ fontWeight: '500' }}>{formatDate(booking.checkInDate)}</div>
+                    </div>
+                    <div>
+                      <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>Check Out</div>
+                      <div style={{ fontWeight: '500' }}>{formatDate(booking.checkOutDate)}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', minWidth: '150px' }}>
+                    <div style={{ fontSize: '1.8rem', fontWeight: '700', color: 'white', marginBottom: '10px' }}>
+                      ${booking.totalPrice}
+                    </div>
+                    {!isCancelled && (
+                      <>
+                      <button 
+                        className="btn btn-outline" 
+                        onClick={() => handleCancel(booking._id)}
+                        style={{ fontSize: '0.9rem', padding: '8px 20px', borderColor: '#ef4444', color: '#f87171', marginBottom: '10px', width: '100%' }}
+                        onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'; }}
+                        onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
                       >
-                        <option value="5">5 Stars</option>
-                        <option value="4">4 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="2">2 Stars</option>
-                        <option value="1">1 Star</option>
-                      </select>
-                    </div>
-                    <div style={{ flex: '1 1 200px' }}>
-                      <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Comment</label>
-                      <input 
-                        type="text" 
-                        required 
-                        className="input-field" 
-                        value={reviewForm.comment}
-                        onChange={e => setReviewForm({...reviewForm, comment: e.target.value})}
-                        placeholder="How was your stay?"
-                        style={{ width: '100%', padding: '8px' }}
-                      />
-                    </div>
-                    <div style={{ marginTop: '25px', display: 'flex', gap: '10px' }}>
-                      <button type="submit" className="btn" style={{ padding: '8px 20px' }}>Submit</button>
-                      <button type="button" onClick={() => setReviewingRoomId(null)} className="btn btn-outline" style={{ padding: '8px 20px' }}>Cancel</button>
-                    </div>
-                  </form>
+                        Cancel Booking
+                      </button>
+                      <button 
+                        className="btn btn-outline" 
+                        onClick={() => setReviewingRoomId(booking.roomId)}
+                        style={{ fontSize: '0.9rem', padding: '8px 20px', width: '100%' }}
+                      >
+                        Leave Review
+                      </button>
+                      </>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {reviewingRoomId === booking.roomId && (
+                  <div className="glass" style={{ marginTop: '10px', padding: '20px', borderRadius: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <form onSubmit={(e) => handleReviewSubmit(e, booking.roomId)} style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                      <div>
+                        <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Rating</label>
+                        <select 
+                          className="input-field" 
+                          value={reviewForm.rating} 
+                          onChange={e => setReviewForm({...reviewForm, rating: Number(e.target.value)})}
+                          style={{ padding: '8px', minWidth: '100px' }}
+                        >
+                          <option value="5">5 Stars</option>
+                          <option value="4">4 Stars</option>
+                          <option value="3">3 Stars</option>
+                          <option value="2">2 Stars</option>
+                          <option value="1">1 Star</option>
+                        </select>
+                      </div>
+                      <div style={{ flex: '1 1 200px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Comment</label>
+                        <input 
+                          type="text" 
+                          required 
+                          className="input-field" 
+                          value={reviewForm.comment}
+                          onChange={e => setReviewForm({...reviewForm, comment: e.target.value})}
+                          placeholder="How was your stay?"
+                          style={{ width: '100%', padding: '8px' }}
+                        />
+                      </div>
+                      <div style={{ marginTop: '25px', display: 'flex', gap: '10px' }}>
+                        <button type="submit" className="btn" style={{ padding: '8px 20px' }}>Submit</button>
+                        <button type="button" onClick={() => setReviewingRoomId(null)} className="btn btn-outline" style={{ padding: '8px 20px' }}>Cancel</button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
+            );
           })}
         </div>
       )}

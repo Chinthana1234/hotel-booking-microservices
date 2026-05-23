@@ -14,6 +14,7 @@ const Navbar = () => {
       <Link to="/" className="logo">LUXE.</Link>
       <div className="links">
         <Link to="/rooms">Rooms</Link>
+        {token && <Link to="/bookings">My Bookings</Link>}
         {token ? (
           <button onClick={handleLogout} className="btn btn-outline" style={{ marginLeft: '15px' }}>Logout</button>
         ) : (

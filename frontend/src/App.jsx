@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Rooms from './pages/Rooms';
 import Auth from './pages/Auth';
+import Bookings from './pages/Bookings';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/bookings" element={<Bookings />} />
       </Routes>
     </Router>
   );

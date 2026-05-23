@@ -28,23 +28,39 @@ const Rooms = () => {
       return;
     }
 
+    let userId = 'demo-user';
     try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload && payload.id) {
+        userId = payload.id;
+      }
+    } catch (e) {
+      console.error('Error decoding token', e);
+    }
+
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+
       // 1. Create Booking (Talks to Booking Service via API Gateway)
       const bookingRes = await axios.post('http://localhost:5000/api/bookings', {
-        userId: 'demo-user', // In a real app, this comes from decoding the JWT token
+        userId: userId,
         roomId: roomId,
         checkInDate: new Date(),
         checkOutDate: new Date(new Date().getTime() + 86400000), // Next day
         totalPrice: price
-      });
+      }, config);
 
       // 2. Process Payment (Talks to Payment Service via API Gateway)
       await axios.post('http://localhost:5000/api/payments', {
         bookingId: bookingRes.data._id,
-        userId: 'demo-user',
+        userId: userId,
         amount: price,
         paymentMethod: 'Credit Card'
-      });
+      }, config);
 
       alert('Booking & Payment Successful!');
       window.location.reload(); // Refresh to show updated availability

@@ -1,11 +1,17 @@
 :root {
-  --primary: #8b5cf6;
-  --primary-hover: #7c3aed;
-  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --primary: #1d4ed8;
+  /* Premium corporate Blue */
+  --primary-hover: #1e40af;
+  /* Darker Blue */
+  --bg-gradient: #ffffff;
+  /* Clean white background */
+  --text-main: #0f172a;
+  /* Deep slate for high legibility */
+  --text-muted: #475569;
+  /* slate-600 */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  /* Light glassmorphism */
+  --glass-border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -22,6 +28,10 @@ body {
   overflow-x: hidden;
 }
 
+body:has(.home-page-container) {
+  background: transparent !important;
+}
+
 /* Glassmorphism utility */
 .glass {
   background: var(--glass-bg);
@@ -29,7 +39,7 @@ body {
   -webkit-backdrop-filter: blur(12px);
   border: var(--glass-border);
   border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .btn {
@@ -47,7 +57,7 @@ body {
 .btn:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.3);
 }
 
 .btn-outline {
@@ -93,7 +103,8 @@ nav .links a {
   font-weight: 500;
 }
 
-nav .links a:hover, nav .links a.active {
+nav .links a:hover,
+nav .links a.active {
   color: white;
 }
 
@@ -117,28 +128,37 @@ nav .links a:hover, nav .links a.active {
   font-size: 2rem;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
-  color: white;
+  color: #0f172a;
   margin-bottom: 16px;
   font-size: 1rem;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
@@ -188,7 +208,7 @@ input:focus {
 .room-price {
   font-size: 2rem;
   font-weight: 700;
-  color: white;
+  color: var(--text-main);
   margin: 15px 0;
 }
 
@@ -209,5 +229,641 @@ input:focus {
   letter-spacing: 1px;
 }
 
-.tag.available { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
-.tag.booked { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.tag.available {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.tag.booked {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Video Background */
+.video-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -2;
+}
+
+.video-background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.85) 100%);
+  z-index: -1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 100px);
+  /* Accounts for Navbar */
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-glass-card {
+  padding: 60px 40px;
+  max-width: 800px;
+  width: 100%;
+  border-radius: 24px;
+}
+
+/* Cinnamon-Style Premium Double-Layer Navbar */
+.navbar-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.navbar-top {
+  background-color: #5c2483;
+  /* Cinnamon Signature Purple */
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  border-bottom: none;
+}
+
+.navbar-top a,
+.navbar-top-item {
+  color: #e9d5ff;
+  /* Soft lavender-white */
+  text-decoration: none;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.navbar-top a:hover {
+  color: #ffffff;
+}
+
+.navbar-top-divider {
+  color: rgba(255, 255, 255, 0.2);
+  margin: 0 15px;
+}
+
+.navbar-top-group {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-bottom {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  background: transparent;
+  border-bottom: none;
+  position: relative;
+}
+
+/* Hamburger Menu Button */
+.hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  padding: 0;
+  z-index: 1010;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+/* Center Brand Logo */
+.brand-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.brand-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 8px;
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+}
+
+.brand-subtitle {
+  font-size: 0.55rem;
+  letter-spacing: 4px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+/* Book Now Pill Button */
+.book-now-btn {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 4px 18px 4px 18px;
+  /* Asymmetry premium pill corners */
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-now-btn:hover {
+  background-color: #ffffff;
+  color: #5c2483;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Slide-out Menu Drawer */
+.menu-drawer {
+  position: fixed;
+  top: 0;
+  left: -340px;
+  width: 340px;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 2000;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-drawer.open {
+  left: 0;
+}
+
+.menu-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+}
+
+.menu-drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-drawer-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  margin-bottom: 50px;
+  transition: transform 0.3s;
+}
+
+.menu-drawer-close:hover {
+  transform: rotate(90deg);
+}
+
+.menu-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.menu-drawer-link {
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  padding-bottom: 5px;
+  border-bottom: 1px solid transparent;
+  display: inline-block;
+}
+
+.menu-drawer-link:hover {
+  color: #c084fc;
+  padding-left: 8px;
+}
+
+/* Cinnamon Landing Page Styles */
+
+/* Booking Widget Floating Panel */
+.booking-widget-wrapper {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1100px;
+  z-index: 100;
+  animation: fadeIn 1s ease-out 0.5s forwards;
+  opacity: 0;
+}
+
+.booking-widget {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px 30px;
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr;
+  gap: 15px;
+  align-items: flex-end;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.widget-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.widget-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #a78bfa;
+  /* Purple label */
+}
+
+.widget-input,
+.widget-select {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 0;
+  /* Override default input margin */
+}
+
+.widget-input:focus,
+.widget-select:focus {
+  border-color: #c084fc;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.widget-select option {
+  background: #1e1b4b;
+  color: #ffffff;
+}
+
+.widget-submit-btn {
+  background-color: #5c2483;
+  color: #ffffff;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-submit-btn:hover {
+  background-color: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+}
+
+/* Home Layout adjustments for scrolling */
+.home-page-container {
+  position: relative;
+  width: 100%;
+}
+
+.home-hero-section {
+  position: relative;
+  height: calc(100vh - 120px);
+  /* Fill screen below navbar */
+  min-height: 500px;
+  width: 100%;
+}
+
+/* Cinnamon Brand Story Section */
+.brand-intro-section {
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: center;
+  padding: 100px 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-story-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 25px;
+}
+
+.brand-story-text {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: #e2e8f0;
+  max-width: 850px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+/* Properties Grid Section */
+.properties-section {
+  background-color: rgba(11, 15, 25, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 100px 8%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.section-subtitle {
+  color: #c084fc;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+}
+
+.premium-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.premium-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(192, 132, 252, 0.35);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.card-image-wrapper {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+  background: #1e293b;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.premium-card:hover .card-image {
+  transform: scale(1.05);
+}
+
+.card-tag {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(92, 36, 131, 0.95);
+  color: #ffffff;
+  padding: 5px 14px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.card-body {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-title {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.card-description {
+  font-size: 0.92rem;
+  color: #cbd5e1;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  flex-grow: 1;
+  font-weight: 300;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 20px;
+}
+
+.card-price {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-price span {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: block;
+  margin-top: 3px;
+}
+
+.card-link {
+  color: #c084fc;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.card-link:hover {
+  color: #ffffff;
+}
+
+/* Premium Footer */
+.premium-footer {
+  background-color: #060810;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 80px 8% 40px;
+  color: #94a3b8;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 50px;
+  margin-bottom: 60px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 6px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.footer-brand-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.footer-column-title {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.footer-links a:hover {
+  color: #c084fc;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 300;
+}

@@ -340,14 +340,21 @@ select:focus {
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
-  border-bottom: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   position: relative;
   transition: all 0.3s ease;
 }
 
-/* Home Page Context: bottom bar remains transparent over video */
+/* Home Page Context: bottom bar remains transparent over video at the top */
 .navbar-home .navbar-bottom {
   background: transparent;
+}
+
+/* Home Page Context Scrolled: bottom bar transitions to solid premium purple on scroll down */
+.navbar-home.scrolled .navbar-bottom {
+  background-color: #3c155c;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Inner Pages Context: bottom bar has dark rich purple background for logo visibility */

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
@@ -6,8 +6,21 @@ const Navbar = () => {
   const location = useLocation();
   const token = localStorage.getItem('token');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const isHomePage = location.pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   let isAdmin = false;
   if (token) {
@@ -35,7 +48,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`navbar-wrapper ${isHomePage ? 'navbar-home' : 'navbar-page'}`}>
+      <header className={`navbar-wrapper ${isHomePage ? 'navbar-home' : 'navbar-page'} ${isScrolled ? 'scrolled' : ''}`}>
         {/* Top Purple Bar */}
         <div className="navbar-top">
           <div className="navbar-top-group">

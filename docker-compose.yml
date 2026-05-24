@@ -21,6 +21,8 @@ services:
       - "5003:5003"
     env_file:
       - ./booking-service/.env
+    environment:
+      - ROOM_SERVICE_URL=http://room-service:5002
 
   payment-service:
     build: ./payment-service
@@ -28,6 +30,8 @@ services:
       - "5004:5004"
     env_file:
       - ./payment-service/.env
+    environment:
+      - BOOKING_SERVICE_URL=http://booking-service:5003
 
   review-service:
     build: ./review-service

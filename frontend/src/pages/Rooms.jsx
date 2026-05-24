@@ -1,6 +1,18 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import roomImg1 from '../assets/images for rooms/download (2).jpeg';
+import roomImg2 from '../assets/images for rooms/download (3).jpeg';
+import roomImg3 from '../assets/images for rooms/download (4).jpeg';
+import roomImg4 from '../assets/images for rooms/download (5).jpeg';
+import roomImg5 from '../assets/images for rooms/images (5).jpeg';
+import roomImg6 from '../assets/images for rooms/images (6).jpeg';
+import roomImg7 from '../assets/images for rooms/images (7).jpeg';
+import roomImg8 from '../assets/images for rooms/images (8).jpeg';
+import roomImg9 from '../assets/images for rooms/images (9).jpeg';
+
+const roomImages = [roomImg1, roomImg2, roomImg3, roomImg4, roomImg5, roomImg6, roomImg7, roomImg8, roomImg9];
+
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -95,35 +107,40 @@ const Rooms = () => {
       
       <div className="rooms-grid">
         {rooms.length === 0 && <p>No rooms available. Try adding some via the backend!</p>}
-        {rooms.map((room) => (
+        {rooms.map((room, index) => (
           <div key={room._id} className="room-card glass">
-            <span className={`tag ${room.isAvailable ? 'available' : 'booked'}`}>
-              {room.isAvailable ? 'Available' : 'Booked'}
-            </span>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '5px' }}>{room.type} Suite - #{room.roomNumber}</h3>
-            {room.reviewCount > 0 ? (
-              <div style={{ color: '#fbbf24', fontSize: '1.1rem', marginBottom: '15px' }}>
-                {'★'.repeat(Math.round(room.avgRating))}
-                {'☆'.repeat(5 - Math.round(room.avgRating))}
-                <span style={{color: 'var(--text-muted)', fontSize: '0.9rem', marginLeft: '8px'}}>({room.avgRating.toFixed(1)} from {room.reviewCount} reviews)</span>
-              </div>
-            ) : (
-               <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '15px' }}>No reviews yet</div>
-            )}
-            <div className="room-price">
-              ${room.pricePerNight} <span>/ night</span>
+            <div className="room-image-wrapper">
+              <span className={`tag ${room.isAvailable ? 'available' : 'booked'}`} style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 10, margin: 0, boxShadow: '0 4px 10px rgba(0,0,0,0.15)' }}>
+                {room.isAvailable ? 'Available' : 'Booked'}
+              </span>
+              <img src={roomImages[index % roomImages.length]} alt={`${room.type} Suite`} className="room-card-image" />
             </div>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '25px', flexGrow: 1 }}>
-              {room.description}
-            </p>
-            <button 
-              className={`btn ${!room.isAvailable ? 'btn-outline' : ''}`}
-              disabled={!room.isAvailable}
-              onClick={() => handleBook(room._id, room.pricePerNight)}
-              style={{ width: '100%', opacity: !room.isAvailable ? 0.5 : 1, cursor: !room.isAvailable ? 'not-allowed' : 'pointer' }}
-            >
-              {room.isAvailable ? 'Book Now' : 'Unavailable'}
-            </button>
+            <div className="room-card-content">
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '5px' }}>{room.type} Suite - #{room.roomNumber}</h3>
+              {room.reviewCount > 0 ? (
+                <div style={{ color: '#fbbf24', fontSize: '1.1rem', marginBottom: '15px' }}>
+                  {'★'.repeat(Math.round(room.avgRating))}
+                  {'☆'.repeat(5 - Math.round(room.avgRating))}
+                  <span style={{color: 'var(--text-muted)', fontSize: '0.9rem', marginLeft: '8px'}}>({room.avgRating.toFixed(1)} from {room.reviewCount} reviews)</span>
+                </div>
+              ) : (
+                 <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '15px' }}>No reviews yet</div>
+              )}
+              <div className="room-price">
+                ${room.pricePerNight} <span>/ night</span>
+              </div>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '25px', flexGrow: 1 }}>
+                {room.description}
+              </p>
+              <button 
+                className={`btn ${!room.isAvailable ? 'btn-outline' : ''}`}
+                disabled={!room.isAvailable}
+                onClick={() => handleBook(room._id, room.pricePerNight)}
+                style={{ width: '100%', opacity: !room.isAvailable ? 0.5 : 1, cursor: !room.isAvailable ? 'not-allowed' : 'pointer', borderRadius: '8px' }}
+              >
+                {room.isAvailable ? 'Book Now' : 'Unavailable'}
+              </button>
+            </div>
           </div>
         ))}
       </div>

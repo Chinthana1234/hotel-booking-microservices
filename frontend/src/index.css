@@ -340,9 +340,20 @@ select:focus {
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
-  background: transparent;
   border-bottom: none;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Home Page Context: bottom bar remains transparent over video */
+.navbar-home .navbar-bottom {
+  background: transparent;
+}
+
+/* Inner Pages Context: bottom bar has dark rich purple background for logo visibility */
+.navbar-page .navbar-bottom {
+  background-color: #3c155c;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Hamburger Menu Button */
@@ -367,6 +378,10 @@ select:focus {
   border-radius: 2px;
 }
 
+.hamburger-btn:hover .hamburger-line {
+  background-color: #e9d5ff;
+}
+
 /* Center Brand Logo */
 .brand-center {
   display: flex;
@@ -378,14 +393,27 @@ select:focus {
   transform: translateX(-50%);
 }
 
-.brand-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 300;
-  letter-spacing: 8px;
+.navbar-top-brand {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: #ffffff;
   text-decoration: none;
-  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 15px;
+  text-transform: none;
+}
+
+.brand-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 2.3rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: none;
   margin: 0;
   line-height: 1;
 }
@@ -393,7 +421,7 @@ select:focus {
 .brand-subtitle {
   font-size: 0.55rem;
   letter-spacing: 4px;
-  color: #94a3b8;
+  color: #e9d5ff; /* Soft lavender matching brand */
   text-transform: uppercase;
   margin-top: 5px;
   font-weight: 600;
@@ -402,17 +430,16 @@ select:focus {
 /* Book Now Pill Button */
 .book-now-btn {
   background-color: #ffffff;
-  color: #0f172a;
+  color: #5c2483; /* Cinnamon Signature Purple text */
   border: none;
   padding: 10px 30px;
-  border-radius: 4px 18px 4px 18px;
-  /* Asymmetry premium pill corners */
+  border-radius: 14px 0 14px 0; /* Asymmetry premium pill corners matching screenshot */
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   display: inline-flex;
@@ -421,10 +448,10 @@ select:focus {
 }
 
 .book-now-btn:hover {
-  background-color: #ffffff;
-  color: #5c2483;
+  background-color: #5c2483;
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(92, 36, 131, 0.4);
 }
 
 /* Slide-out Menu Drawer */

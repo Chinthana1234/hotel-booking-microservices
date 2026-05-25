@@ -7,6 +7,7 @@ const Navbar = () => {
   const token = localStorage.getItem('token');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isBookingWidgetOpen, setIsBookingWidgetOpen] = useState(false);
 
   const isHomePage = location.pathname === '/';
 

@@ -101,46 +101,95 @@ const Rooms = () => {
   if (error) return <div className="container" style={{ color: '#f87171', textAlign: 'center' }}>{error}</div>;
 
   return (
-    <div className="container animate-fade-in">
+    <div className="container animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
       <h2 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>Our Rooms</h2>
       <p style={{ color: 'var(--text-muted)' }}>Find your perfect escape.</p>
 
-      <div className="rooms-grid">
+      <div className="rooms-list-container">
         {rooms.length === 0 && <p>No rooms available. Try adding some via the backend!</p>}
         {rooms.map((room, index) => (
-          <div key={room._id} className="room-card glass">
-            <div className="room-image-wrapper">
-              <span className={`tag ${room.isAvailable ? 'available' : 'booked'}`} style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 10, margin: 0, boxShadow: '0 4px 10px rgba(0,0,0,0.15)' }}>
-                {room.isAvailable ? 'Available' : 'Booked'}
-              </span>
-              <img src={roomImages[index % roomImages.length]} alt={`${room.type} Suite`} className="room-card-image" />
-            </div>
-            <div className="room-card-content">
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '5px' }}>{room.type} Suite - #{room.roomNumber}</h3>
-              {room.reviewCount > 0 ? (
-                <div style={{ color: '#fbbf24', fontSize: '1.1rem', marginBottom: '15px' }}>
-                  {'★'.repeat(Math.round(room.avgRating))}
-                  {'☆'.repeat(5 - Math.round(room.avgRating))}
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginLeft: '8px' }}>({room.avgRating.toFixed(1)} from {room.reviewCount} reviews)</span>
+          <div key={room._id} className="room-list-card">
+            
+            {/* Left Column: Image & Amenities */}
+            <div className="room-list-left">
+              <div className="room-list-image-container">
+                <img src={roomImages[index % roomImages.length]} alt={`${room.type} Suite`} className="room-list-image" />
+                <div className="gallery-icon-overlay">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                 </div>
-              ) : (
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '15px' }}>No reviews yet</div>
-              )}
-              <div className="room-price">
-                ${room.pricePerNight} <span>/ night</span>
               </div>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '25px', flexGrow: 1 }}>
-                {room.description}
-              </p>
+              <div className="room-list-amenities">
+                <div className="amenity-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 2v20M15 5H8a3.5 3.5 0 0 0 0 7h6a3.5 3.5 0 0 1 0 7H8"/></svg>
+                  Air Conditioning
+                </div>
+                <div className="amenity-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 6h8M12 2v4M12 18v4M6 12H2M22 12h-4"/></svg>
+                  Separate Shower
+                </div>
+                <div className="amenity-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  Hair Dryer
+                </div>
+              </div>
+            </div>
+
+            {/* Middle Column: Details & Promo */}
+            <div className="room-list-mid">
+              <h3 className="room-list-title">{room.type.toUpperCase()}</h3>
+              <div className="room-tabs">
+                <div className="room-tab active">{room.type} King</div>
+                <div className="room-tab">{room.type} Twin</div>
+              </div>
+              
+              <div className="room-status-bar">
+                <span className={`room-urgency ${room.isAvailable ? 'red-text' : 'gray-text'}`}>
+                  {room.isAvailable ? 'Only 1 room left' : 'Booked out'}
+                </span>
+                <span className="room-meta">1 King bed &bull; Sleeps 3</span>
+              </div>
+              
+              <div className="room-details-link">Room Details</div>
+              
+              <div className="room-promo-divider"></div>
+
+              <div className="room-promo-section">
+                <div className="promo-title">Room Only - The Grand Ceylon DISCOVERY - The Grand Ceylon Discovery Member</div>
+                <div className="promo-highlight">Earn 2X DISCOVERY Dollars with The Grand Ceylon DISCOVERY Island Rewards until 31st May 2026.</div>
+                <div className="promo-list">
+                  15% off Dining<br/>
+                  10% off Spa Indulgences
+                </div>
+                <div className="promo-extra">
+                  Enjoy your exclusive nature stay with:<br/>
+                  2X DISCOVERY Dollars until 31 Oct 2026<br/>
+                  &bull; 15% savings on dining<br/>
+                  &bull; 10% savings on spa indulgences<br/>
+                  &bull; Member exclusive benefits
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Pricing & Booking */}
+            <div className="room-list-right">
+              <div className="member-rate-label">MEMBER RATE</div>
+              <div className="price-block">
+                <span className="old-price">${room.pricePerNight + 50}</span>
+                <span className="new-price">${room.pricePerNight}</span>
+              </div>
+              <div className="price-meta">
+                Per Night<br/>
+                Excluding taxes and fees
+              </div>
               <button
-                className={`btn ${!room.isAvailable ? 'btn-outline' : ''}`}
+                className={`book-now-list-btn ${!room.isAvailable ? 'disabled' : ''}`}
                 disabled={!room.isAvailable}
                 onClick={() => handleBook(room._id, room.pricePerNight)}
-                style={{ width: '100%', opacity: !room.isAvailable ? 0.5 : 1, cursor: !room.isAvailable ? 'not-allowed' : 'pointer', borderRadius: '8px' }}
               >
                 {room.isAvailable ? 'Book Now' : 'Unavailable'}
               </button>
             </div>
+
           </div>
         ))}
       </div>

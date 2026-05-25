@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import roomImg1 from '../assets/images for rooms/download (2).jpeg';
@@ -14,6 +15,7 @@ import roomImg9 from '../assets/images for rooms/images (9).jpeg';
 const roomImages = [roomImg1, roomImg2, roomImg3, roomImg4, roomImg5, roomImg6, roomImg7, roomImg8, roomImg9];
 
 const Rooms = () => {
+  const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -49,52 +51,8 @@ const Rooms = () => {
     fetchRooms();
   }, []);
 
-  const handleBook = async (roomId, price) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Please sign in to book a room!');
-      return;
-    }
-
-    let userId = 'demo-user';
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload && payload.id) {
-        userId = payload.id;
-      }
-    } catch (e) {
-      console.error('Error decoding token', e);
-    }
-
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-
-      // 1. Create Booking (Talks to Booking Service via API Gateway)
-      const bookingRes = await axios.post('http://localhost:5000/api/bookings', {
-        userId: userId,
-        roomId: roomId,
-        checkInDate: new Date(),
-        checkOutDate: new Date(new Date().getTime() + 86400000), // Next day
-        totalPrice: price
-      }, config);
-
-      // 2. Process Payment (Talks to Payment Service via API Gateway)
-      await axios.post('http://localhost:5000/api/payments', {
-        bookingId: bookingRes.data._id,
-        userId: userId,
-        amount: price,
-        paymentMethod: 'Credit Card'
-      }, config);
-
-      alert('Booking & Payment Successful!');
-      window.location.reload(); // Refresh to show updated availability
-    } catch (err) {
-      alert(err.response?.data?.message || 'Booking failed');
-    }
+  const handleBook = (room) => {
+    navigate('/checkout', { state: { room } });
   };
 
   if (loading) return <div className="container" style={{ textAlign: 'center', marginTop: '50px' }}>Loading luxury...</div>;
@@ -137,10 +95,6 @@ const Rooms = () => {
             {/* Middle Column: Details & Promo */}
             <div className="room-list-mid">
               <h3 className="room-list-title">{room.type.toUpperCase()}</h3>
-              <div className="room-tabs">
-                <div className="room-tab active">{room.type} King</div>
-                <div className="room-tab">{room.type} Twin</div>
-              </div>
               
               <div className="room-status-bar">
                 <span className={`room-urgency ${room.isAvailable ? 'red-text' : 'gray-text'}`}>
@@ -184,7 +138,7 @@ const Rooms = () => {
               <button
                 className={`book-now-list-btn ${!room.isAvailable ? 'disabled' : ''}`}
                 disabled={!room.isAvailable}
-                onClick={() => handleBook(room._id, room.pricePerNight)}
+                onClick={() => handleBook(room)}
               >
                 {room.isAvailable ? 'Book Now' : 'Unavailable'}
               </button>

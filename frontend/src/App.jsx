@@ -5,6 +5,7 @@ import Rooms from './pages/Rooms';
 import Auth from './pages/Auth';
 import Bookings from './pages/Bookings';
 import AdminPanel from './pages/AdminPanel';
+import Checkout from './pages/Checkout';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/rooms" element={<Rooms />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/admin" element={<AdminPanel />} />

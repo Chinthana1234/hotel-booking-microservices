@@ -1148,3 +1148,274 @@ select:focus {
     padding-top: 20px;
   }
 }
+
+/* --- Checkout Page Styles --- */
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.checkout-success-banner {
+  background: #f4f8ec;
+  border: 1px solid #7c9b4e;
+  color: #5c743d;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+.checkout-success-banner svg {
+  color: #7c9b4e;
+  width: 20px;
+  height: 20px;
+}
+
+.checkout-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #5c2483;
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.back-arrow {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.checkout-grid {
+  display: flex;
+  gap: 40px;
+}
+
+.checkout-left {
+  flex: 1;
+}
+
+.addons-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+}
+
+.addons-title {
+  color: #5c2483;
+  font-weight: 300;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+.addon-box {
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 1px solid #e2e8f0;
+}
+
+.addon-info {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.addon-name {
+  color: #5c2483;
+  font-weight: 300;
+  font-size: 1rem;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.addon-action {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.addon-price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.addon-price-meta {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.addon-btn {
+  background: #5c2483;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.addon-btn.added {
+  background: #cbd5e1;
+  color: #334155;
+}
+
+.checkout-right {
+  flex: 0 0 350px;
+}
+
+.cart-box {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 20px;
+}
+
+.cart-title {
+  color: #5c2483;
+  font-weight: 300;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.cart-summary-top {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.cart-total-label {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.cart-total-meta {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.cart-item-details {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.cart-item-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.cart-room-name {
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.cart-room-base-price {
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.cart-room-promo {
+  font-size: 0.85rem;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.cart-room-stay {
+  font-size: 0.85rem;
+  color: #5c2483;
+  text-decoration: underline;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.cart-taxes-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #1e293b;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 10px;
+  margin-top: 10px;
+  text-decoration: underline;
+}
+
+.cart-dates {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+.cart-links {
+  margin-top: 15px;
+  font-size: 0.8rem;
+  color: #5c2483;
+}
+
+.cart-links span {
+  cursor: pointer;
+}
+
+.cart-summary-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.cart-total-label-big {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.cart-total-value-big {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.cart-checkout-btn {
+  background: #5c2483;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.cart-checkout-btn:hover {
+  background: #4a1d6a;
+}
+
+@media (max-width: 968px) {
+  .checkout-grid {
+    flex-direction: column;
+  }
+  .checkout-right {
+    flex: 0 0 auto;
+  }
+}

@@ -583,89 +583,113 @@ select:focus {
   transform: translateX(-50%);
   width: 90%;
   max-width: 1100px;
-  z-index: 100;
-  animation: fadeIn 1s ease-out 0.5s forwards;
-  opacity: 0;
+  max-width: 1200px;
+  z-index: 10;
 }
 
 .booking-widget {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 20px 30px;
-  display: grid;
-  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr;
-  gap: 15px;
-  align-items: flex-end;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  background: #ffffff;
+  border-radius: 8px 8px 8px 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
 }
 
 .widget-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.widget-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: #a78bfa;
-  /* Purple label */
-}
-
-.widget-input,
-.widget-select {
-  width: 100%;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  color: #ffffff;
-  font-size: 0.85rem;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 0;
-  /* Override default input margin */
-}
-
-.widget-input:focus,
-.widget-select:focus {
-  border-color: #c084fc;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.widget-select option {
-  background: #1e1b4b;
-  color: #ffffff;
-}
-
-.widget-submit-btn {
-  background-color: #5c2483;
-  color: #ffffff;
-  border: none;
-  padding: 11px 20px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  height: 40px;
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-right: 1px solid #e2e8f0;
 }
 
-.widget-submit-btn:hover {
-  background-color: #7c3aed;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+.widget-field:nth-last-child(2) {
+  border-right: none;
+}
+
+.widget-input-dummy {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.95rem;
+  color: #1e293b;
+  width: 100%;
+  padding: 25px 0;
+  cursor: pointer;
+}
+
+.widget-input-dummy.promo-input {
+  color: #64748b;
+  cursor: text;
+}
+
+.widget-icon {
+  color: #64748b;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.widget-submit-btn.book-now {
+  background: #683087;
+  color: #ffffff;
+  border: none;
+  padding: 0 40px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  white-space: nowrap;
+}
+
+.widget-submit-btn.book-now:hover {
+  background: #562772;
+}
+
+.navbar-booking-widget-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 15px 5%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeInDown 0.3s ease-out forwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-booking-widget-dropdown .booking-widget {
+  max-width: 1200px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 968px) {
+  .booking-widget {
+    flex-direction: column;
+    border-radius: 8px;
+  }
+  .widget-field {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .widget-submit-btn.book-now {
+    padding: 20px;
+  }
 }
 
 /* Home Layout adjustments for scrolling */

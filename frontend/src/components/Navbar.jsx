@@ -101,10 +101,40 @@ const Navbar = () => {
           </div>
 
           {/* Right: Book Now asymmetric button */}
-          <Link to="/rooms" className="book-now-btn">
+          <button className="book-now-btn" onClick={() => setIsBookingWidgetOpen(!isBookingWidgetOpen)}>
             Book Now
-          </Link>
+          </button>
         </div>
+
+        {/* Floating Booking Widget Dropdown */}
+        {isBookingWidgetOpen && (
+          <div className="navbar-booking-widget-dropdown">
+            <form className="booking-widget" onSubmit={(e) => { e.preventDefault(); setIsBookingWidgetOpen(false); navigate('/rooms'); }}>
+              <div className="widget-field">
+                <input type="text" className="widget-input-dummy" value="Select Destination" readOnly />
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="widget-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </div>
+
+              <div className="widget-field">
+                <input type="text" className="widget-input-dummy" value="25 May - 26 May, 2026" readOnly />
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="widget-icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+
+              <div className="widget-field">
+                <input type="text" className="widget-input-dummy" value="01 Room, 02 Adults" readOnly />
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="widget-icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+
+              <div className="widget-field">
+                <input type="text" className="widget-input-dummy promo-input" placeholder="Promo code" readOnly />
+              </div>
+
+              <button type="submit" className="widget-submit-btn book-now">
+                BOOK NOW
+              </button>
+            </form>
+          </div>
+        )}
       </header>
 
       {/* Slide-out Sidebar Drawer */}

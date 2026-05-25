@@ -52,7 +52,7 @@ const Navbar = () => {
         {/* Top Purple Bar */}
         <div className="navbar-top">
           <div className="navbar-top-group">
-            <Link to="/" className="navbar-top-brand">Luxe.</Link>
+            <Link to="/" className="navbar-top-brand">The Grand Ceylon</Link>
             <span className="navbar-top-divider">|</span>
             <span className="navbar-top-item" style={{ opacity: 0.8 }}>DISCOVERY</span>
           </div>
@@ -96,7 +96,7 @@ const Navbar = () => {
 
           {/* Center: Brand Identity */}
           <div className="brand-center">
-            <Link to="/" className="brand-title">Luxe.</Link>
+            <Link to="/" className="brand-title">The Grand Ceylon</Link>
             <span className="brand-subtitle">Hotels & Resorts</span>
           </div>
 

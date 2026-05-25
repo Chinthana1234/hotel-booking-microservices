@@ -6,7 +6,7 @@ const AdminPanel = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     roomNumber: '',
     type: 'Standard',
@@ -22,7 +22,7 @@ const AdminPanel = () => {
       navigate('/auth');
       return;
     }
-    
+
     // Check if admin
     try {
       const decoded = JSON.parse(atob(token.split('.')[1]));
@@ -49,7 +49,7 @@ const AdminPanel = () => {
 
   const handleDelete = async (roomId) => {
     if (!window.confirm('Are you sure you want to delete this room?')) return;
-    
+
     try {
       await axios.delete(`http://localhost:5000/api/rooms/${roomId}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -73,34 +73,34 @@ const AdminPanel = () => {
     }
   };
 
-  if (loading) return <div className="loading" style={{textAlign: 'center', marginTop: '4rem'}}>Loading Admin Panel...</div>;
-  if (error) return <div className="error" style={{textAlign: 'center', marginTop: '4rem', color: '#ff4d4f'}}>{error}</div>;
+  if (loading) return <div className="loading" style={{ textAlign: 'center', marginTop: '4rem' }}>Loading Admin Panel...</div>;
+  if (error) return <div className="error" style={{ textAlign: 'center', marginTop: '4rem', color: '#ff4d4f' }}>{error}</div>;
 
   return (
     <div className="container" style={{ paddingTop: '100px' }}>
       <h1 className="title">Admin <span className="highlight">Panel</span></h1>
-      
+
       <div className="admin-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
-        
+
         <div className="admin-form glass-card" style={{ padding: '2rem' }}>
           <h2>Add New Room</h2>
           <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
             <div>
               <label>Room Number</label>
-              <input 
-                type="text" 
-                required 
+              <input
+                type="text"
+                required
                 className="input-field"
                 value={formData.roomNumber}
-                onChange={(e) => setFormData({...formData, roomNumber: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, roomNumber: e.target.value })}
               />
             </div>
             <div>
               <label>Room Type</label>
-              <select 
+              <select
                 className="input-field"
                 value={formData.type}
-                onChange={(e) => setFormData({...formData, type: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
               >
                 <option value="Standard">Standard</option>
                 <option value="Deluxe">Deluxe</option>
@@ -109,22 +109,22 @@ const AdminPanel = () => {
             </div>
             <div>
               <label>Price Per Night ($)</label>
-              <input 
-                type="number" 
-                required 
+              <input
+                type="number"
+                required
                 className="input-field"
                 value={formData.pricePerNight}
-                onChange={(e) => setFormData({...formData, pricePerNight: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, pricePerNight: e.target.value })}
               />
             </div>
             <div>
               <label>Description</label>
-              <textarea 
-                required 
+              <textarea
+                required
                 className="input-field"
                 rows="3"
                 value={formData.description}
-                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               ></textarea>
             </div>
             <button type="submit" className="btn" style={{ width: '100%', marginTop: '1rem' }}>Add Room</button>
@@ -150,9 +150,9 @@ const AdminPanel = () => {
                     <td style={{ padding: '1rem' }}>{room.type}</td>
                     <td style={{ padding: '1rem' }}>${room.pricePerNight}</td>
                     <td style={{ padding: '1rem' }}>
-                      <button 
+                      <button
                         onClick={() => handleDelete(room._id)}
-                        className="btn btn-outline" 
+                        className="btn btn-outline"
                         style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', borderColor: '#ff4d4f', color: '#ff4d4f' }}
                       >
                         Delete

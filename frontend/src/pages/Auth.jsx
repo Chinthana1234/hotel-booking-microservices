@@ -10,7 +10,7 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const endpoint = isLogin ? '/api/users/login' : '/api/users/register';
-    
+
     try {
       const res = await axios.post(`http://localhost:5000${endpoint}`, formData);
       localStorage.setItem('token', res.data.token);
@@ -26,27 +26,27 @@ const Auth = () => {
         <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
         <form onSubmit={handleSubmit}>
           {!isLogin && (
-            <input 
-              type="text" 
-              placeholder="Full Name" 
+            <input
+              type="text"
+              placeholder="Full Name"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              required 
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
             />
           )}
-          <input 
-            type="email" 
-            placeholder="Email Address" 
+          <input
+            type="email"
+            placeholder="Email Address"
             value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
-            required 
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            required
           />
-          <input 
-            type="password" 
-            placeholder="Password" 
+          <input
+            type="password"
+            placeholder="Password"
             value={formData.password}
-            onChange={(e) => setFormData({...formData, password: e.target.value})}
-            required 
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            required
           />
           <button type="submit" className="btn" style={{ width: '100%', marginTop: '10px' }}>
             {isLogin ? 'Sign In' : 'Register'}
@@ -54,8 +54,8 @@ const Auth = () => {
         </form>
         <p style={{ marginTop: '20px', color: 'var(--text-muted)' }}>
           {isLogin ? "Don't have an account? " : "Already have an account? "}
-          <span 
-            onClick={() => setIsLogin(!isLogin)} 
+          <span
+            onClick={() => setIsLogin(!isLogin)}
             style={{ color: 'var(--primary)', cursor: 'pointer', fontWeight: '500' }}
           >
             {isLogin ? 'Register' : 'Sign In'}

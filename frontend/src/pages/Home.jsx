@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import bgVideo from '../assets/home page background/WhatsApp Video 2026-05-24 at 11.31.38 AM.mp4';
-import destMainImg from '../assets/home page background/download (6).jpeg';
+import destMainImg from '../assets/home page background/download (8).jpeg';
 import destSubImg from '../assets/destination_sub.png';
 
 import roomImg1 from '../assets/images for rooms/download (2).jpeg';
@@ -141,7 +141,7 @@ const Home = () => {
       <section className="brand-intro-section">
         <h2 className="brand-story-title">A Journey of Extraordinary Moments</h2>
         <p className="brand-story-text">
-          Inspired by Sri Lankan heritage and Cinnamon's warm hospitality, Luxe Hotels & Resorts offers
+          Inspired by Sri Lankan heritage and Cinnamon's warm hospitality, The Grand Ceylon Hotels & Resorts offers 
           an elite collection of destinations designed to rejuvenate the body, mind, and spirit. From
           dynamic modern business centers in the city heart of Colombo to rustic luxury safaris on the
           verge of Yala's untamed wilderness, experience unmatched luxury engineered on a modern
@@ -157,9 +157,8 @@ const Home = () => {
         <div className="destination-text-content">
           <h2 className="destination-title">
             WE ARE THE HEART<br/>
-            OF EVERY<br/>
-            DESTINATION WE<br/>
-            LIVE IN
+            OF EVERY DESTINATION<br/>
+            WE LIVE IN
           </h2>
           <p className="destination-description">
             There are many trails and stories surrounding our destination hotels & resorts, and we know them all.
@@ -226,7 +225,7 @@ const Home = () => {
       <footer className="premium-footer">
         <div className="footer-grid">
           <div className="footer-brand">
-            <span className="footer-logo">Luxe.</span>
+            <span className="footer-logo">The Grand Ceylon.</span>
             <p className="footer-brand-text">
               Providing luxury stays and extraordinary travel memories inspired by Sri Lankan hospitality.
               Built with microservices, styled for absolute comfort.
@@ -256,7 +255,7 @@ const Home = () => {
           <div>
             <h4 className="footer-column-title">Corporate</h4>
             <ul className="footer-links">
-              <li><span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>About Luxe</span></li>
+              <li><span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>About The Grand Ceylon</span></li>
               <li><span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Careers</span></li>
               <li><span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Sustainability</span></li>
               <li><span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Contact Us</span></li>
@@ -265,7 +264,7 @@ const Home = () => {
         </div>
 
         <div className="footer-bottom">
-          <span>&copy; {new Date().getFullYear()} Luxe Hotels & Resorts. All Rights Reserved. Inspired by Cinnamon.</span>
+          <span>&copy; {new Date().getFullYear()} The Grand Ceylon Hotels & Resorts. All Rights Reserved. Inspired by Cinnamon.</span>
           <div style={{ display: 'flex', gap: '20px' }}>
             <span style={{ cursor: 'pointer' }}>Privacy Policy</span>
             <span style={{ cursor: 'pointer' }}>Terms of Use</span>

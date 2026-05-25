@@ -39,7 +39,7 @@ const Bookings = () => {
 
         // 2. Fetch all rooms to map details
         const roomsRes = await axios.get('http://localhost:5000/api/rooms');
-        
+
         // Convert rooms array into an easy-lookup dictionary: { roomId: roomObj }
         const roomsMap = {};
         roomsRes.data.forEach(room => {
@@ -70,9 +70,9 @@ const Bookings = () => {
       });
 
       alert('Booking cancelled successfully!');
-      
+
       // Update UI state locally
-      setBookings(prevBookings => 
+      setBookings(prevBookings =>
         prevBookings.map(b => b._id === bookingId ? { ...b, status: 'Cancelled' } : b)
       );
     } catch (err) {
@@ -109,8 +109,8 @@ const Bookings = () => {
     });
   };
 
-  if (loading) return <div className="container" style={{textAlign: 'center', marginTop: '50px'}}>Loading your reservations...</div>;
-  if (error) return <div className="container" style={{color: '#f87171', textAlign: 'center'}}>{error}</div>;
+  if (loading) return <div className="container" style={{ textAlign: 'center', marginTop: '50px' }}>Loading your reservations...</div>;
+  if (error) return <div className="container" style={{ color: '#f87171', textAlign: 'center' }}>{error}</div>;
 
   return (
     <div className="container animate-fade-in">
@@ -165,22 +165,22 @@ const Bookings = () => {
                     </div>
                     {!isCancelled && (
                       <>
-                      <button 
-                        className="btn btn-outline" 
-                        onClick={() => handleCancel(booking._id)}
-                        style={{ fontSize: '0.9rem', padding: '8px 20px', borderColor: '#ef4444', color: '#f87171', marginBottom: '10px', width: '100%' }}
-                        onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'; }}
-                        onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-                      >
-                        Cancel Booking
-                      </button>
-                      <button 
-                        className="btn btn-outline" 
-                        onClick={() => setReviewingRoomId(booking.roomId)}
-                        style={{ fontSize: '0.9rem', padding: '8px 20px', width: '100%' }}
-                      >
-                        Leave Review
-                      </button>
+                        <button
+                          className="btn btn-outline"
+                          onClick={() => handleCancel(booking._id)}
+                          style={{ fontSize: '0.9rem', padding: '8px 20px', borderColor: '#ef4444', color: '#f87171', marginBottom: '10px', width: '100%' }}
+                          onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                        >
+                          Cancel Booking
+                        </button>
+                        <button
+                          className="btn btn-outline"
+                          onClick={() => setReviewingRoomId(booking.roomId)}
+                          style={{ fontSize: '0.9rem', padding: '8px 20px', width: '100%' }}
+                        >
+                          Leave Review
+                        </button>
                       </>
                     )}
                   </div>
@@ -191,10 +191,10 @@ const Bookings = () => {
                     <form onSubmit={(e) => handleReviewSubmit(e, booking.roomId)} style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                       <div>
                         <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Rating</label>
-                        <select 
-                          className="input-field" 
-                          value={reviewForm.rating} 
-                          onChange={e => setReviewForm({...reviewForm, rating: Number(e.target.value)})}
+                        <select
+                          className="input-field"
+                          value={reviewForm.rating}
+                          onChange={e => setReviewForm({ ...reviewForm, rating: Number(e.target.value) })}
                           style={{ padding: '8px', minWidth: '100px' }}
                         >
                           <option value="5">5 Stars</option>
@@ -206,12 +206,12 @@ const Bookings = () => {
                       </div>
                       <div style={{ flex: '1 1 200px' }}>
                         <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Comment</label>
-                        <input 
-                          type="text" 
-                          required 
-                          className="input-field" 
+                        <input
+                          type="text"
+                          required
+                          className="input-field"
                           value={reviewForm.comment}
-                          onChange={e => setReviewForm({...reviewForm, comment: e.target.value})}
+                          onChange={e => setReviewForm({ ...reviewForm, comment: e.target.value })}
                           placeholder="How was your stay?"
                           style={{ width: '100%', padding: '8px' }}
                         />

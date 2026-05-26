@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 
 const Checkout = () => {
   const location = useLocation();
@@ -37,7 +36,7 @@ const Checkout = () => {
   const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
   const dateStr = `${today.toLocaleDateString('en-US', options)} - ${tomorrow.toLocaleDateString('en-US', options)}`;
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Please sign in to complete checkout!');
@@ -45,43 +44,20 @@ const Checkout = () => {
       return;
     }
 
-    let userId = 'demo-user';
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload && payload.id) {
-        userId = payload.id;
+    // Navigate to the Payment page with all cart details
+    navigate('/payment', {
+      state: {
+        room,
+        total,
+        subtotal,
+        taxesAndFees,
+        hasHighTea,
+        hasCookery,
+        highTeaPrice,
+        cookeryPrice,
+        basePrice
       }
-    } catch (e) {
-      console.error('Error decoding token', e);
-    }
-
-    try {
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
-
-      // 1. Create Booking
-      const bookingRes = await axios.post('http://localhost:5000/api/bookings', {
-        userId: userId,
-        roomId: room._id,
-        checkInDate: today,
-        checkOutDate: tomorrow,
-        totalPrice: parseFloat(total.toFixed(2))
-      }, config);
-
-      // 2. Process Payment
-      await axios.post('http://localhost:5000/api/payments', {
-        bookingId: bookingRes.data._id,
-        userId: userId,
-        amount: parseFloat(total.toFixed(2)),
-        paymentMethod: 'Credit Card'
-      }, config);
-
-      alert('Booking & Payment Successful!');
-      navigate('/bookings');
-    } catch (err) {
-      alert(err.response?.data?.message || 'Checkout failed');
-    }
+    });
   };
 
   return (

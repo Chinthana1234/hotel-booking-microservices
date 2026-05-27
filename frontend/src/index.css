@@ -667,6 +667,7 @@ select:focus {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -683,10 +684,12 @@ select:focus {
     flex-direction: column;
     border-radius: 8px;
   }
+
   .widget-field {
     border-right: none;
     border-bottom: 1px solid #e2e8f0;
   }
+
   .widget-submit-btn.book-now {
     padding: 20px;
   }
@@ -844,10 +847,12 @@ select:focus {
   .destination-story-section {
     flex-direction: column;
   }
+
   .destination-text-content {
     max-width: 100%;
     margin-bottom: 50px;
   }
+
   .destination-image-single {
     width: 100%;
     justify-content: center;
@@ -1139,9 +1144,11 @@ select:focus {
   .room-list-card {
     flex-direction: column;
   }
+
   .room-list-left {
     flex: 0 0 auto;
   }
+
   .room-list-right {
     flex: 0 0 auto;
     border-top: 1px solid #e2e8f0;
@@ -1415,6 +1422,7 @@ select:focus {
   .checkout-grid {
     flex-direction: column;
   }
+
   .checkout-right {
     flex: 0 0 auto;
   }
@@ -1613,6 +1621,7 @@ select:focus {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -2020,7 +2029,9 @@ select:focus {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Trust Badges */
@@ -2176,8 +2187,13 @@ select:focus {
 }
 
 @keyframes scaleIn {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
 }
 
 .success-icon-circle svg {
@@ -2250,8 +2266,13 @@ select:focus {
 }
 
 @keyframes fillBar {
-  from { width: 0%; }
-  to { width: 100%; }
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
 }
 
 /* Payment Page Responsive */
@@ -2259,19 +2280,210 @@ select:focus {
   .payment-grid {
     flex-direction: column;
   }
+
   .payment-right {
     flex: 0 0 auto;
   }
+
   .card-input-row {
     flex-direction: column;
     gap: 18px;
   }
+
   .payment-trust-section {
     flex-direction: column;
     align-items: center;
     gap: 12px;
   }
+
   .payment-secure-badge {
     display: none;
+  }
+}
+
+/* ================================================ */
+/* --- Functional Navbar Booking Widget Styles ---  */
+/* ================================================ */
+
+/* Functional input (replaces read-only dummy inputs) */
+.widget-input-functional {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.95rem;
+  color: #1e293b;
+  width: 100%;
+  padding: 25px 0;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: none;
+}
+
+.widget-input-functional:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+select.widget-input-functional {
+  background-image: none;
+  padding-right: 10px;
+}
+
+input[type="text"].widget-input-functional::placeholder {
+  color: #94a3b8;
+}
+
+/* Date group: two dates side by side with separator */
+.widget-date-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.widget-date-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #5c2483;
+  margin-bottom: 2px;
+}
+
+.widget-date-input {
+  padding: 8px 0 !important;
+  font-size: 0.9rem !important;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.widget-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.4;
+  filter: invert(15%) sepia(60%) saturate(5000%) hue-rotate(265deg) brightness(80%);
+}
+
+.widget-date-separator {
+  color: #cbd5e1;
+  font-size: 1rem;
+  margin: 0 12px;
+  align-self: center;
+  margin-top: 14px;
+}
+
+/* Guest display */
+.widget-guest-display {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.widget-guest-field {
+  position: relative;
+}
+
+/* Guest picker popup */
+.widget-guest-picker {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  min-width: 260px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  z-index: 200;
+  animation: fadeInDown 0.25s ease-out forwards;
+}
+
+.widget-guest-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.widget-guest-row:last-of-type {
+  border-bottom: none;
+}
+
+.widget-guest-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.widget-guest-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.widget-picker-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #5c2483;
+  background: transparent;
+  color: #5c2483;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.widget-picker-btn:hover {
+  background: #5c2483;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.widget-picker-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  min-width: 28px;
+  text-align: center;
+}
+
+.widget-guest-done-btn {
+  margin-top: 14px;
+  width: 100%;
+  background: #5c2483;
+  color: #ffffff;
+  border: none;
+  padding: 11px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.widget-guest-done-btn:hover {
+  background: #4a1d6a;
+}
+
+/* Responsive adjustments for functional widget */
+@media (max-width: 968px) {
+  .widget-date-separator {
+    margin: 0 6px;
+  }
+  .widget-guest-picker {
+    min-width: 220px;
+    left: auto;
+    right: 0;
   }
 }

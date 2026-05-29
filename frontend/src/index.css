@@ -1,8 +1,8 @@
 :root {
-  --primary: #1d4ed8;
-  /* Premium corporate Blue */
-  --primary-hover: #1e40af;
-  /* Darker Blue */
+  --primary: #db2777;
+  /* Premium luxury Pink */
+  --primary-hover: #be185d;
+  /* Darker luxury Pink */
   --bg-gradient: #ffffff;
   /* Clean white background */
   --text-main: #0f172a;
@@ -57,7 +57,7 @@ body:has(.home-page-container) {
 .btn:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.3);
+  box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3);
 }
 
 .btn-outline {
@@ -145,7 +145,7 @@ select {
 input:focus,
 select:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
+  box-shadow: 0 0 0 2px rgba(219, 39, 119, 0.2);
 }
 
 /* Animations */

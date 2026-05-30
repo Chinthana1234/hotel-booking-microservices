@@ -13,6 +13,10 @@ const styleSheet = `
     overflow-x: hidden;
   }
 
+  .auth-page-container.register-mode {
+    flex-direction: row-reverse;
+  }
+
   .auth-form-side {
     width: 50%;
     display: flex;
@@ -280,7 +284,7 @@ const styleSheet = `
 
   @media (max-width: 968px) {
     .auth-page-container {
-      flex-direction: column;
+      flex-direction: column !important;
     }
 
     .auth-form-side {
@@ -320,7 +324,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="auth-page-container">
+    <div className={`auth-page-container ${!isLogin ? 'register-mode' : ''}`}>
       <style>{styleSheet}</style>
 
       {/* Left side Form */}

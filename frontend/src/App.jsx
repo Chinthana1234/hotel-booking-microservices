@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Rooms from './pages/Rooms';
@@ -8,10 +8,13 @@ import AdminPanel from './pages/AdminPanel';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Payment';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const showNavbar = location.pathname !== '/auth';
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/rooms" element={<Rooms />} />
@@ -21,6 +24,14 @@ function App() {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

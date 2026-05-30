@@ -325,7 +325,7 @@ const Auth = () => {
 
       {/* Left side Form */}
       <div className="auth-form-side">
-        <div className="auth-brand">Aura Gems</div>
+        <div className="auth-brand">The Grand Ceylon</div>
 
         <div className="auth-form-wrapper">
           <h2 className="auth-title">
@@ -435,7 +435,7 @@ const Auth = () => {
           </button>
 
           <p className="auth-footer">
-            {isLogin ? "New to Aura Gems? " : "Already have an account? "}
+            {isLogin ? "New to The Grand Ceylon? " : "Already have an account? "}
             <span
               onClick={() => setIsLogin(!isLogin)}
               className="auth-footer-link"
@@ -447,7 +447,7 @@ const Auth = () => {
 
         {/* Small copyright at bottom */}
         <div style={{ color: '#94a3b8', fontSize: '0.75rem', marginTop: 'auto', paddingTop: '20px' }}>
-          &copy; {new Date().getFullYear()} Aura Gems. All rights reserved.
+          &copy; {new Date().getFullYear()} The Grand Ceylon. All rights reserved.
         </div>
       </div>
 
@@ -455,13 +455,13 @@ const Auth = () => {
       <div className="auth-image-side" style={{ backgroundImage: `url(${bgImage})` }}>
         <div className="auth-image-overlay"></div>
         <div className="auth-image-content">
-          <h1 className="auth-right-title">Nature's Masterpiece</h1>
+          <h1 className="auth-right-title">The Grand Ceylon</h1>
           <div className="auth-right-divider">
             <div className="auth-right-line"></div>
             <span className="auth-right-bullet">✦</span>
             <div className="auth-right-line"></div>
           </div>
-          <p className="auth-right-sub">“Crafted by time, perfected by light.”</p>
+          <p className="auth-right-sub">“Crafted by nature, perfected by luxury.”</p>
         </div>
       </div>
     </div>

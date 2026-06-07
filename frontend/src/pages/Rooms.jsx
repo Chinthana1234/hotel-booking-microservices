@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import roomImg1 from '../assets/images for rooms/download (2).jpeg';
@@ -16,6 +16,9 @@ const roomImages = [roomImg1, roomImg2, roomImg3, roomImg4, roomImg5, roomImg6, 
 
 const Rooms = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { checkIn, checkOut } = location.state || {};
+
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,8 +26,11 @@ const Rooms = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        // Notice we are communicating ONLY with the API Gateway on port 5000!
-        const res = await axios.get('http://localhost:5000/api/rooms');
+        let endpoint = 'http://localhost:5000/api/rooms';
+        if (checkIn && checkOut) {
+            endpoint = `http://localhost:5000/api/bookings/available-rooms?checkIn=${checkIn}&checkOut=${checkOut}`;
+        }
+        const res = await axios.get(endpoint);
 
         // Fetch reviews for each room to calculate average rating
         const roomsWithRatings = await Promise.all(res.data.map(async (room) => {
@@ -43,16 +49,16 @@ const Rooms = () => {
 
         setRooms(roomsWithRatings);
       } catch (err) {
-        setError('Failed to load rooms. Make sure the API Gateway & Room Service are running!');
+        setError('Failed to load rooms. Make sure the API Gateway, Room Service, and Booking Service are running!');
       } finally {
         setLoading(false);
       }
     };
     fetchRooms();
-  }, []);
+  }, [checkIn, checkOut]);
 
   const handleBook = (room) => {
-    navigate('/checkout', { state: { room } });
+    navigate('/checkout', { state: { room, checkIn, checkOut } });
   };
 
   if (loading) return <div className="container" style={{ textAlign: 'center', marginTop: '50px' }}>Loading luxury...</div>;
@@ -61,7 +67,11 @@ const Rooms = () => {
   return (
     <div className="container animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
       <h2 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>Our Rooms</h2>
-      <p style={{ color: 'var(--text-muted)' }}>Find your perfect escape.</p>
+      {checkIn && checkOut ? (
+        <p style={{ color: 'var(--text-muted)' }}>Showing available rooms from <strong>{checkIn}</strong> to <strong>{checkOut}</strong>.</p>
+      ) : (
+        <p style={{ color: 'var(--text-muted)' }}>Find your perfect escape.</p>
+      )}
 
       <div className="rooms-list-container">
         {rooms.length === 0 && <p>No rooms available. Try adding some via the backend!</p>}
@@ -97,8 +107,8 @@ const Rooms = () => {
               <h3 className="room-list-title">{room.type.toUpperCase()}</h3>
               
               <div className="room-status-bar">
-                <span className={`room-urgency ${room.isAvailable ? 'red-text' : 'gray-text'}`}>
-                  {room.isAvailable ? 'Only 1 room left' : 'Booked out'}
+                <span className={`room-urgency ${room.isAvailable !== false ? 'red-text' : 'gray-text'}`}>
+                  {room.isAvailable !== false ? 'Available' : 'Unavailable'}
                 </span>
                 <span className="room-meta">1 King bed &bull; Sleeps 3</span>
               </div>
@@ -136,11 +146,11 @@ const Rooms = () => {
                 Excluding taxes and fees
               </div>
               <button
-                className={`book-now-list-btn ${!room.isAvailable ? 'disabled' : ''}`}
-                disabled={!room.isAvailable}
+                className={`book-now-list-btn ${room.isAvailable === false ? 'disabled' : ''}`}
+                disabled={room.isAvailable === false}
                 onClick={() => handleBook(room)}
               >
-                {room.isAvailable ? 'Book Now' : 'Unavailable'}
+                {room.isAvailable !== false ? 'Book Now' : 'Unavailable'}
               </button>
             </div>
 

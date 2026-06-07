@@ -8,27 +8,43 @@ const createBooking = async (req, res) => {
     try {
         const { userId, roomId, checkInDate, checkOutDate, totalPrice } = req.body;
 
-        // 1. Communicate with Room Service to check if room is available
+        // Convert dates
+        const reqCheckIn = new Date(checkInDate);
+        const reqCheckOut = new Date(checkOutDate);
+
+        // 1. Communicate with Room Service to check if room exists
         const roomResponse = await axios.get(`${process.env.ROOM_SERVICE_URL}/api/rooms/${roomId}`);
         const room = roomResponse.data;
 
-        if (!room.isAvailable) {
-            return res.status(400).json({ message: 'Room is currently not available' });
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+
+        // 1.5 Check for overlapping bookings for this specific room
+        const overlappingBookings = await Booking.find({
+            roomId: roomId,
+            status: { $ne: 'Cancelled' },
+            $and: [
+                { checkInDate: { $lt: reqCheckOut } },
+                { checkOutDate: { $gt: reqCheckIn } }
+            ]
+        });
+
+        if (overlappingBookings.length > 0) {
+            return res.status(400).json({ message: 'Room is not available for the selected dates' });
         }
 
         // 2. Create the booking in the database
         const booking = await Booking.create({
             userId,
             roomId,
-            checkInDate,
-            checkOutDate,
+            checkInDate: reqCheckIn,
+            checkOutDate: reqCheckOut,
             totalPrice
         });
 
-        // 3. Communicate with Room Service to update availability to false (booked)
-        await axios.put(`${process.env.ROOM_SERVICE_URL}/api/rooms/${roomId}/availability`, {
-            isAvailable: false
-        });
+        // 3. We no longer permanently update the room's availability to false.
+        // It remains true globally, and availability is determined dynamically by date.
 
         res.status(201).json(booking);
     } catch (error) {
@@ -62,10 +78,8 @@ const cancelBooking = async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
-        // 1. Update Room Service to make room available again
-        await axios.put(`${process.env.ROOM_SERVICE_URL}/api/rooms/${booking.roomId}/availability`, {
-            isAvailable: true
-        });
+        // 1. We no longer need to manually set the room to available
+        // because we don't set it to unavailable anymore.
 
         // 2. Change booking status to Cancelled (instead of deleting from DB to keep history)
         booking.status = 'Cancelled';
@@ -77,8 +91,49 @@ const cancelBooking = async (req, res) => {
     }
 };
 
+// @desc    Get available rooms for dates
+// @route   GET /api/bookings/available-rooms
+// @access  Public
+const getAvailableRooms = async (req, res) => {
+    try {
+        const { checkIn, checkOut } = req.query;
+
+        // Fetch all rooms
+        const roomsResponse = await axios.get(`${process.env.ROOM_SERVICE_URL}/api/rooms`);
+        const allRooms = roomsResponse.data;
+
+        if (!checkIn || !checkOut) {
+            // If no dates provided, just return all rooms
+            return res.json(allRooms);
+        }
+
+        const reqCheckIn = new Date(checkIn);
+        const reqCheckOut = new Date(checkOut);
+
+        // Find bookings that overlap with requested dates
+        const overlappingBookings = await Booking.find({
+            status: { $ne: 'Cancelled' },
+            $and: [
+                { checkInDate: { $lt: reqCheckOut } },
+                { checkOutDate: { $gt: reqCheckIn } }
+            ]
+        });
+
+        // Extract booked room IDs
+        const bookedRoomIds = overlappingBookings.map(b => b.roomId.toString());
+
+        // Filter out booked rooms
+        const availableRooms = allRooms.filter(room => !bookedRoomIds.includes(room._id.toString()));
+
+        res.json(availableRooms);
+    } catch (error) {
+        res.status(500).json({ message: 'Error checking availability', error: error.message });
+    }
+};
+
 module.exports = {
     createBooking,
     getUserBookings,
-    cancelBooking
+    cancelBooking,
+    getAvailableRooms
 };

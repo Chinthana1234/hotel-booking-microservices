@@ -5,7 +5,7 @@ import axios from 'axios';
 const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { room, total, subtotal, taxesAndFees, hasHighTea, hasCookery, highTeaPrice, cookeryPrice, basePrice } = location.state || {};
+  const { room, total, subtotal, taxesAndFees, hasHighTea, hasCookery, highTeaPrice, cookeryPrice, basePrice, checkInDate, checkOutDate } = location.state || {};
 
   const [paymentMethod, setPaymentMethod] = useState('paypal');
   const [processing, setProcessing] = useState(false);
@@ -33,8 +33,15 @@ const Payment = () => {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const parsedCheckIn = checkInDate ? new Date(checkInDate) : today;
+  const parsedCheckOut = checkOutDate ? new Date(checkOutDate) : tomorrow;
+
   const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
-  const dateStr = `${today.toLocaleDateString('en-US', options)} – ${tomorrow.toLocaleDateString('en-US', options)}`;
+  const dateStr = `${parsedCheckIn.toLocaleDateString('en-US', options)} – ${parsedCheckOut.toLocaleDateString('en-US', options)}`;
+  
+  const timeDiff = parsedCheckOut.getTime() - parsedCheckIn.getTime();
+  const nights = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
 
   const processBookingAndPayment = async (method) => {
     const token = localStorage.getItem('token');
@@ -60,8 +67,8 @@ const Payment = () => {
       const bookingRes = await axios.post('http://localhost:5000/api/bookings', {
         userId,
         roomId: room._id,
-        checkInDate: today,
-        checkOutDate: tomorrow,
+        checkInDate: parsedCheckIn.toISOString(),
+        checkOutDate: parsedCheckOut.toISOString(),
         totalPrice: parseFloat(total.toFixed(2))
       }, config);
 
@@ -140,7 +147,7 @@ const Payment = () => {
             </div>
             <div className="success-detail-row">
               <span>Stay</span>
-              <span>1 Night</span>
+              <span>{nights} Night{nights > 1 ? 's' : ''}</span>
             </div>
           </div>
           <div className="success-loader-bar">
@@ -295,7 +302,7 @@ const Payment = () => {
                         </div>
                         <div className="confirm-detail-row">
                           <span>Stay</span>
-                          <span>1 Night</span>
+                          <span>{nights} Night{nights > 1 ? 's' : ''}</span>
                         </div>
                       </div>
                       <button 
@@ -452,7 +459,7 @@ const Payment = () => {
             <div className="payment-room-info">
               <div className="payment-room-name">{room.type.toUpperCase()}, {room.type} King</div>
               <div className="payment-room-dates">{dateStr}</div>
-              <div className="payment-room-guests">2 Adults • 1 Night</div>
+              <div className="payment-room-guests">2 Adults • {nights} Night{nights > 1 ? 's' : ''}</div>
             </div>
 
             <div className="payment-line-items">

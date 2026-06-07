@@ -5,6 +5,8 @@ const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const room = location.state?.room;
+  const passedCheckIn = location.state?.checkIn;
+  const passedCheckOut = location.state?.checkOut;
 
   const [hasHighTea, setHasHighTea] = useState(false);
   const [hasCookery, setHasCookery] = useState(false);
@@ -32,9 +34,16 @@ const Checkout = () => {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const checkInDate = passedCheckIn ? new Date(passedCheckIn) : today;
+  const checkOutDate = passedCheckOut ? new Date(passedCheckOut) : tomorrow;
   
   const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
-  const dateStr = `${today.toLocaleDateString('en-US', options)} - ${tomorrow.toLocaleDateString('en-US', options)}`;
+  const dateStr = `${checkInDate.toLocaleDateString('en-US', options)} - ${checkOutDate.toLocaleDateString('en-US', options)}`;
+  
+  // Calculate nights
+  const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+  const nights = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
 
   const handleCheckout = () => {
     const token = localStorage.getItem('token');
@@ -55,7 +64,9 @@ const Checkout = () => {
         hasCookery,
         highTeaPrice,
         cookeryPrice,
-        basePrice
+        basePrice,
+        checkInDate: checkInDate.toISOString(),
+        checkOutDate: checkOutDate.toISOString()
       }
     });
   };
@@ -130,7 +141,7 @@ const Checkout = () => {
                 <div className="cart-room-base-price">${basePrice.toFixed(2)}</div>
               </div>
               <div className="cart-room-promo">Room Only - Standard Rate - Getaway Deal 2026</div>
-              <div className="cart-room-stay">1 Night stay</div>
+              <div className="cart-room-stay">{nights} Night stay</div>
               
               {hasHighTea && (
                 <div className="cart-item-header" style={{marginTop: '10px'}}>

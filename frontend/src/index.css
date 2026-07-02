@@ -796,13 +796,25 @@ select:focus {
   font-weight: 700;
 }
 
+.properties-section .room-card .btn {
+  background: #5c2483;
+}
+
+.properties-section .room-card .btn:hover {
+  background: #4a1d6a;
+  box-shadow: 0 4px 15px rgba(92, 36, 131, 0.35);
+}
+
 /* Destination Story Section */
 .destination-story-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 100px 8%;
-  background-color: #ffffff;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   gap: 50px;
 }
 
@@ -815,7 +827,7 @@ select:focus {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 2.8rem;
   font-weight: 400;
-  color: #704285;
+  color: #c084fc; /* Light purple matching the brand color scheme */
   text-transform: uppercase;
   line-height: 1.15;
   margin-bottom: 35px;
@@ -824,7 +836,7 @@ select:focus {
 
 .destination-description {
   font-size: 1.05rem;
-  color: #4a4a4a;
+  color: #e2e8f0; /* Soft gray for readability on dark background */
   line-height: 2;
   font-weight: 300;
 }
@@ -841,6 +853,8 @@ select:focus {
   max-width: 650px;
   height: auto;
   object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 968px) {

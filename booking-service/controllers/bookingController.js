@@ -131,9 +131,22 @@ const getAvailableRooms = async (req, res) => {
     }
 };
 
+// @desc    Get all bookings
+// @route   GET /api/bookings/admin/all
+// @access  Private/Admin
+const getAllBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find({}).sort({ createdAt: -1 });
+        res.json(bookings);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     createBooking,
     getUserBookings,
     cancelBooking,
-    getAvailableRooms
+    getAvailableRooms,
+    getAllBookings
 };

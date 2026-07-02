@@ -4,10 +4,12 @@ const {
     createBooking, 
     getUserBookings, 
     cancelBooking,
-    getAvailableRooms
+    getAvailableRooms,
+    getAllBookings
 } = require('../controllers/bookingController');
 
 router.route('/available-rooms').get(getAvailableRooms);
+router.route('/admin/all').get(getAllBookings);
 router.route('/').post(createBooking);
 router.route('/user/:userId').get(getUserBookings);
 router.route('/:id').delete(cancelBooking);

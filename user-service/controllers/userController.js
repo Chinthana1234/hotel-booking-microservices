@@ -97,8 +97,39 @@ const getUserProfile = async (req, res) => {
     }
 };
 
+// @desc    Get all users
+// @route   GET /api/users
+// @access  Private/Admin
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}).select('-password');
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Promote user to Admin
+// @route   PUT /api/users/:id/promote
+// @access  Private/Admin
+const promoteUserToAdmin = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.isAdmin = true;
+        await user.save();
+        res.json({ message: `Successfully promoted ${user.name} to Admin`, user });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
     getUserProfile,
+    getAllUsers,
+    promoteUserToAdmin
 };

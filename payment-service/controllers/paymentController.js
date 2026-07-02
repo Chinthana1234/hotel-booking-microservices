@@ -52,7 +52,20 @@ const getPaymentByBooking = async (req, res) => {
     }
 };
 
+// @desc    Get all payments
+// @route   GET /api/payments/admin/all
+// @access  Private/Admin
+const getAllPayments = async (req, res) => {
+    try {
+        const payments = await Payment.find({}).sort({ createdAt: -1 });
+        res.json(payments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     processPayment,
-    getPaymentByBooking
+    getPaymentByBooking,
+    getAllPayments
 };

@@ -53,12 +53,31 @@ services:
       - BOOKING_SERVICE_URL=http://booking-service:5003
       - PAYMENT_SERVICE_URL=http://payment-service:5004
       - REVIEW_SERVICE_URL=http://review-service:5005
+      - ADMIN_SERVICE_URL=http://admin-service:5006
     depends_on:
       - user-service
       - room-service
       - booking-service
       - payment-service
       - review-service
+      - admin-service
+
+  admin-service:
+    build: ./admin-service
+    ports:
+      - "5006:5006"
+    env_file:
+      - ./admin-service/.env
+    environment:
+      - USER_SERVICE_URL=http://user-service:5001
+      - ROOM_SERVICE_URL=http://room-service:5002
+      - BOOKING_SERVICE_URL=http://booking-service:5003
+      - PAYMENT_SERVICE_URL=http://payment-service:5004
+    depends_on:
+      - user-service
+      - room-service
+      - booking-service
+      - payment-service
 
   frontend:
     build: ./frontend

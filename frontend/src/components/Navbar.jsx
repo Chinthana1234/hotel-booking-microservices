@@ -22,6 +22,22 @@ const Navbar = () => {
 
   const isHomePage = location.pathname === '/';
 
+  // Close booking widget when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isBookingWidgetOpen &&
+        widgetRef.current &&
+        !widgetRef.current.contains(event.target) &&
+        !event.target.closest('.book-now-btn')
+      ) {
+        setIsBookingWidgetOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isBookingWidgetOpen]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -68,6 +84,9 @@ const Navbar = () => {
 
   return (
     <>
+      {isBookingWidgetOpen && (
+        <div className="booking-widget-overlay" onClick={() => setIsBookingWidgetOpen(false)}></div>
+      )}
       <header className={`navbar-wrapper ${isHomePage ? 'navbar-home' : 'navbar-page'} ${isScrolled ? 'scrolled' : ''}`}>
         {/* Top Purple Bar */}
         <div className="navbar-top">

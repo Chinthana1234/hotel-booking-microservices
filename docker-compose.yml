@@ -24,14 +24,21 @@ services:
     environment:
       - ROOM_SERVICE_URL=http://room-service:5002
 
+  # ──────────────────────────────────────────
+  # Payment Service — .NET Core (C#) + MongoDB
+  # Replaces the old Node.js payment-service
+  # Same API endpoints: POST /api/payments, GET /api/payments/booking/:id
+  # ──────────────────────────────────────────
   payment-service:
-    build: ./payment-service
+    build: ./payment-service-dotnet
     ports:
       - "5004:5004"
-    env_file:
-      - ./payment-service/.env
     environment:
-      - BOOKING_SERVICE_URL=http://booking-service:5003
+      - MongoDbSettings__ConnectionString=mongodb+srv://chinthana:mypassword123@cluster0.153ofer.mongodb.net/hotel_payment_service
+      - MongoDbSettings__DatabaseName=hotel_payment_service
+      - MongoDbSettings__CollectionName=payments
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5004
 
   review-service:
     build: ./review-service
@@ -40,28 +47,9 @@ services:
     env_file:
       - ./review-service/.env
 
-  api-gateway:
-    build: ./api-gateway
-    ports:
-      - "5000:5000"
-    env_file:
-      - ./api-gateway/.env
-    environment:
-      # These override the .env file so the Gateway can route to the Docker container names
-      - USER_SERVICE_URL=http://user-service:5001
-      - ROOM_SERVICE_URL=http://room-service:5002
-      - BOOKING_SERVICE_URL=http://booking-service:5003
-      - PAYMENT_SERVICE_URL=http://payment-service:5004
-      - REVIEW_SERVICE_URL=http://review-service:5005
-      - ADMIN_SERVICE_URL=http://admin-service:5006
-    depends_on:
-      - user-service
-      - room-service
-      - booking-service
-      - payment-service
-      - review-service
-      - admin-service
-
+  # ──────────────────────────────────────────
+  # Admin Service — Python + FastAPI
+  # ──────────────────────────────────────────
   admin-service:
     build: ./admin-service
     ports:
@@ -79,9 +67,40 @@ services:
       - booking-service
       - payment-service
 
-  frontend:
-    build: ./frontend
+  # ──────────────────────────────────────────
+  # API Gateway — Node.js + Express
+  # Routes all frontend traffic to backend services
+  # ──────────────────────────────────────────
+  api-gateway:
+    build: ./api-gateway
     ports:
-      - "5173:5173"
+      - "5000:5000"
+    env_file:
+      - ./api-gateway/.env
+    environment:
+      - USER_SERVICE_URL=http://user-service:5001
+      - ROOM_SERVICE_URL=http://room-service:5002
+      - BOOKING_SERVICE_URL=http://booking-service:5003
+      - PAYMENT_SERVICE_URL=http://payment-service:5004
+      - REVIEW_SERVICE_URL=http://review-service:5005
+      - ADMIN_SERVICE_URL=http://admin-service:5006
+    depends_on:
+      - user-service
+      - room-service
+      - booking-service
+      - payment-service
+      - review-service
+      - admin-service
+
+  # ──────────────────────────────────────────
+  # Frontend — Next.js + Redux Toolkit (RTK Query) + Tailwind CSS
+  # Replaces the old Vite + React frontend
+  # ──────────────────────────────────────────
+  frontend:
+    build: ./hackathon-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api-gateway:5000
     depends_on:
       - api-gateway

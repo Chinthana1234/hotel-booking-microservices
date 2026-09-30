@@ -2315,6 +2315,34 @@ select:focus {
   }
 }
 
+/* PayPal Buttons Container */
+.paypal-buttons-container {
+  margin: 20px 0;
+  min-height: 55px;
+}
+
+.paypal-info-text {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.paypal-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
 /* Payment Page Responsive */
 @media (max-width: 968px) {
   .payment-grid {

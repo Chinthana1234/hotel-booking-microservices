@@ -6,7 +6,7 @@ namespace PaymentService.Services
 {
     public interface IPaymentService
     {
-        Task<Payment> ProcessPaymentAsync(ProcessPaymentRequest request);
+        Task<Payment> ProcessPaymentAsync(ProcessPaymentRequest request, string? paypalOrderId = null, string? paypalCaptureId = null);
         Task<Payment?> GetPaymentByBookingIdAsync(string bookingId);
         Task<List<Payment>> GetAllPaymentsAsync();
     }
@@ -31,8 +31,9 @@ namespace PaymentService.Services
         /// <summary>
         /// Process a new payment — simulates successful transaction
         /// Same behaviour as Node.js: status is always "Completed"
+        /// Optionally stores PayPal order/capture IDs for PayPal payments
         /// </summary>
-        public async Task<Payment> ProcessPaymentAsync(ProcessPaymentRequest request)
+        public async Task<Payment> ProcessPaymentAsync(ProcessPaymentRequest request, string? paypalOrderId = null, string? paypalCaptureId = null)
         {
             var payment = new Payment
             {
@@ -41,12 +42,15 @@ namespace PaymentService.Services
                 Amount = request.Amount,
                 PaymentMethod = request.PaymentMethod,
                 Status = "Completed", // Simulating a successful transaction
+                PayPalOrderId = paypalOrderId,
+                PayPalCaptureId = paypalCaptureId,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
 
             await _payments.InsertOneAsync(payment);
-            _logger.LogInformation("Payment processed: BookingId={BookingId}, Amount={Amount}", request.BookingId, request.Amount);
+            _logger.LogInformation("Payment processed: BookingId={BookingId}, Amount={Amount}, Method={Method}",
+                request.BookingId, request.Amount, request.PaymentMethod);
             return payment;
         }
 

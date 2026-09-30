@@ -97,10 +97,10 @@ services:
   # Replaces the old Vite + React frontend
   # ──────────────────────────────────────────
   frontend:
-    build: ./hackathon-frontend
+    build: ./frontend
     ports:
-      - "3000:3000"
+      - "5173:5173"
     environment:
-      - NEXT_PUBLIC_API_URL=http://api-gateway:5000
+      - VITE_API_URL=http://api-gateway:5000
     depends_on:
       - api-gateway

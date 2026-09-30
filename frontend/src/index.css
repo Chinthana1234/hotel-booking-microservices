@@ -652,6 +652,7 @@ select:focus {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -666,7 +667,8 @@ select:focus {
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 999; /* Just below navbar-wrapper (1000) */
+  z-index: 999;
+  /* Just below navbar-wrapper (1000) */
   animation: overlayFadeIn 0.3s ease-out forwards;
 }
 
@@ -849,7 +851,8 @@ select:focus {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 2.8rem;
   font-weight: 400;
-  color: #c084fc; /* Light purple matching the brand color scheme */
+  color: #c084fc;
+  /* Light purple matching the brand color scheme */
   text-transform: uppercase;
   line-height: 1.15;
   margin-bottom: 35px;
@@ -858,7 +861,8 @@ select:focus {
 
 .destination-description {
   font-size: 1.05rem;
-  color: #e2e8f0; /* Soft gray for readability on dark background */
+  color: #e2e8f0;
+  /* Soft gray for readability on dark background */
   line-height: 2;
   font-weight: 300;
 }
@@ -2517,6 +2521,7 @@ input[type="text"].widget-input-functional::placeholder {
   .widget-date-separator {
     margin: 0 6px;
   }
+
   .widget-guest-picker {
     min-width: 220px;
     left: auto;

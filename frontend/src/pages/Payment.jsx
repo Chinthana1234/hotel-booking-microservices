@@ -10,7 +10,7 @@ const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState('paypal');
   const [processing, setProcessing] = useState(false);
   const [paypalStep, setPaypalStep] = useState('select'); // 'select' | 'login' | 'confirm' | 'success'
-  
+
   // PayPal login form
   const [paypalEmail, setPaypalEmail] = useState('');
   const [paypalPassword, setPaypalPassword] = useState('');
@@ -39,7 +39,7 @@ const Payment = () => {
 
   const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
   const dateStr = `${parsedCheckIn.toLocaleDateString('en-US', options)} – ${parsedCheckOut.toLocaleDateString('en-US', options)}`;
-  
+
   const timeDiff = parsedCheckOut.getTime() - parsedCheckIn.getTime();
   const nights = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
 
@@ -130,7 +130,7 @@ const Payment = () => {
         <div className="payment-success-screen">
           <div className="success-icon-circle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6L9 17l-5-5"/>
+              <path d="M20 6L9 17l-5-5" />
             </svg>
           </div>
           <h2 className="success-title">Payment Successful!</h2>
@@ -165,8 +165,8 @@ const Payment = () => {
         SECURE PAYMENT
         <div className="payment-secure-badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
           SSL Encrypted
         </div>
@@ -177,9 +177,9 @@ const Payment = () => {
         <div className="payment-left">
           <div className="payment-methods-section">
             <h3 className="payment-section-title">SELECT PAYMENT METHOD</h3>
-            
+
             {/* PayPal Tab */}
-            <div 
+            <div
               className={`payment-method-tab ${paymentMethod === 'paypal' ? 'active' : ''}`}
               onClick={() => { setPaymentMethod('paypal'); setPaypalStep('select'); }}
             >
@@ -201,26 +201,26 @@ const Payment = () => {
                       <p className="paypal-info-text">
                         You will be redirected to PayPal to complete your payment securely.
                       </p>
-                      <button 
+                      <button
                         className="paypal-checkout-btn"
                         onClick={() => setPaypalStep('login')}
                       >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.76c-.52 0-.96.382-1.04.901l-.638 4.1-.015.08-.456 2.892-.015.032z"/>
+                          <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.76c-.52 0-.96.382-1.04.901l-.638 4.1-.015.08-.456 2.892-.015.032z" />
                         </svg>
                         Continue with PayPal
                       </button>
                       <div className="paypal-benefits">
                         <div className="benefit-item">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M20 6L9 17l-5-5"/></svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M20 6L9 17l-5-5" /></svg>
                           Buyer Protection Included
                         </div>
                         <div className="benefit-item">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M20 6L9 17l-5-5"/></svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M20 6L9 17l-5-5" /></svg>
                           No card details shared
                         </div>
                         <div className="benefit-item">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M20 6L9 17l-5-5"/></svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><path d="M20 6L9 17l-5-5" /></svg>
                           One-touch checkout
                         </div>
                       </div>
@@ -237,7 +237,7 @@ const Payment = () => {
                       <form onSubmit={handlePaypalLogin} className="paypal-login-form">
                         <div className="paypal-input-group">
                           <label>Email or mobile number</label>
-                          <input 
+                          <input
                             type="email"
                             value={paypalEmail}
                             onChange={(e) => setPaypalEmail(e.target.value)}
@@ -247,7 +247,7 @@ const Payment = () => {
                         </div>
                         <div className="paypal-input-group">
                           <label>Password</label>
-                          <input 
+                          <input
                             type="password"
                             value={paypalPassword}
                             onChange={(e) => setPaypalPassword(e.target.value)}
@@ -261,8 +261,8 @@ const Payment = () => {
                           <div className="paypal-divider">
                             <span>or</span>
                           </div>
-                          <button 
-                            type="button" 
+                          <button
+                            type="button"
                             className="paypal-signup-btn"
                             onClick={() => {
                               setPaypalEmail('guest@hotel.com');
@@ -305,7 +305,7 @@ const Payment = () => {
                           <span>{nights} Night{nights > 1 ? 's' : ''}</span>
                         </div>
                       </div>
-                      <button 
+                      <button
                         className="paypal-pay-now-btn"
                         onClick={handlePaypalConfirm}
                         disabled={processing}
@@ -326,7 +326,7 @@ const Payment = () => {
             </div>
 
             {/* Credit Card Tab */}
-            <div 
+            <div
               className={`payment-method-tab ${paymentMethod === 'card' ? 'active' : ''}`}
               onClick={() => setPaymentMethod('card')}
             >
@@ -349,7 +349,7 @@ const Payment = () => {
                   <form onSubmit={handleCreditCardPay} className="card-form">
                     <div className="card-input-group">
                       <label>Cardholder Name</label>
-                      <input 
+                      <input
                         type="text"
                         value={cardName}
                         onChange={(e) => setCardName(e.target.value)}
@@ -360,7 +360,7 @@ const Payment = () => {
                     <div className="card-input-group">
                       <label>Card Number</label>
                       <div className="card-number-input-wrapper">
-                        <input 
+                        <input
                           type="text"
                           value={cardNumber}
                           onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
@@ -378,7 +378,7 @@ const Payment = () => {
                     <div className="card-input-row">
                       <div className="card-input-group">
                         <label>Expiry Date</label>
-                        <input 
+                        <input
                           type="text"
                           value={cardExpiry}
                           onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
@@ -390,7 +390,7 @@ const Payment = () => {
                       <div className="card-input-group">
                         <label>CVV</label>
                         <div className="cvv-input-wrapper">
-                          <input 
+                          <input
                             type="password"
                             value={cardCvv}
                             onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
@@ -399,13 +399,13 @@ const Payment = () => {
                             required
                           />
                           <svg className="cvv-help-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                            <circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" />
                           </svg>
                         </div>
                       </div>
                     </div>
-                    <button 
-                      type="submit" 
+                    <button
+                      type="submit"
                       className="card-pay-btn"
                       disabled={processing}
                     >
@@ -414,8 +414,8 @@ const Payment = () => {
                       ) : (
                         <>
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                           </svg>
                           Pay ${total.toFixed(2)}
                         </>
@@ -431,20 +431,20 @@ const Payment = () => {
           <div className="payment-trust-section">
             <div className="trust-badge">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5c2483" strokeWidth="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
               <span>Secure Payment</span>
             </div>
             <div className="trust-badge">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5c2483" strokeWidth="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
               <span>256-bit SSL</span>
             </div>
             <div className="trust-badge">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5c2483" strokeWidth="2">
-                <path d="M20 6L9 17l-5-5"/>
+                <path d="M20 6L9 17l-5-5" />
               </svg>
               <span>Money-back Guarantee</span>
             </div>
@@ -455,7 +455,7 @@ const Payment = () => {
         <div className="payment-right">
           <div className="payment-summary-card">
             <h3 className="payment-summary-title">ORDER SUMMARY</h3>
-            
+
             <div className="payment-room-info">
               <div className="payment-room-name">{room.type.toUpperCase()}, {room.type} King</div>
               <div className="payment-room-dates">{dateStr}</div>
@@ -467,14 +467,14 @@ const Payment = () => {
                 <span>Room ({room.type})</span>
                 <span>${basePrice.toFixed(2)}</span>
               </div>
-              
+
               {hasHighTea && (
                 <div className="payment-line-item">
                   <span>High Tea Package</span>
                   <span>${highTeaPrice.toFixed(2)}</span>
                 </div>
               )}
-              
+
               {hasCookery && (
                 <div className="payment-line-item">
                   <span>Cookery Demo Package</span>
@@ -500,8 +500,8 @@ const Payment = () => {
 
             <div className="payment-promo-tag">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-                <line x1="7" y1="7" x2="7.01" y2="7"/>
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                <line x1="7" y1="7" x2="7.01" y2="7" />
               </svg>
               Getaway Deal 2026 Applied
             </div>
@@ -509,9 +509,9 @@ const Payment = () => {
 
           <div className="payment-cancellation-note">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <div>
               <strong>Free cancellation</strong> available up to 24 hours before check-in.

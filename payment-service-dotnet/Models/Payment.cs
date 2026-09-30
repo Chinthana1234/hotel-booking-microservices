@@ -29,6 +29,14 @@ namespace PaymentService.Models
         [BsonElement("status")]
         public string Status { get; set; } = "Completed";
 
+        [BsonElement("paypalOrderId")]
+        [BsonIgnoreIfNull]
+        public string? PayPalOrderId { get; set; }
+
+        [BsonElement("paypalCaptureId")]
+        [BsonIgnoreIfNull]
+        public string? PayPalCaptureId { get; set; }
+
         [BsonElement("createdAt")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -45,6 +53,47 @@ namespace PaymentService.Models
         public string UserId { get; set; } = string.Empty;
         public double Amount { get; set; }
         public string PaymentMethod { get; set; } = string.Empty;
+    }
+
+    /// <summary>
+    /// Request DTO for creating a PayPal order
+    /// </summary>
+    public class PayPalCreateOrderRequest
+    {
+        public double Amount { get; set; }
+        public string Currency { get; set; } = "USD";
+    }
+
+    /// <summary>
+    /// Response DTO from PayPal order creation
+    /// </summary>
+    public class PayPalCreateOrderResponse
+    {
+        public string OrderId { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string? ApprovalUrl { get; set; }
+    }
+
+    /// <summary>
+    /// Request DTO for capturing a PayPal order
+    /// </summary>
+    public class PayPalCaptureOrderRequest
+    {
+        public string OrderId { get; set; } = string.Empty;
+        public string BookingId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
+        public double Amount { get; set; }
+    }
+
+    /// <summary>
+    /// Response DTO from PayPal order capture
+    /// </summary>
+    public class PayPalCaptureResponse
+    {
+        public string OrderId { get; set; } = string.Empty;
+        public string? CaptureId { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public double Amount { get; set; }
     }
 
     /// <summary>

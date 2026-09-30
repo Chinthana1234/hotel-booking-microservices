@@ -37,6 +37,9 @@ services:
       - MongoDbSettings__ConnectionString=mongodb+srv://chinthana:mypassword123@cluster0.153ofer.mongodb.net/hotel_payment_service
       - MongoDbSettings__DatabaseName=hotel_payment_service
       - MongoDbSettings__CollectionName=payments
+      - PayPalSettings__ClientId=BAAnnvVaDaF0TyQ4vWjVT8TsnZLwUtv8eUrsYjiSxU6ppN-_rJEwgW2NLPRoctmKm8JCMnC6WkDhtI9ZYI
+      - PayPalSettings__ClientSecret=ENwjbXhdwMHZGeHUX5hjzX-5wWT-IYwr49mC1njtzUYaCyphE-nNv36i4grpBS5IPl_Zr228QJL4MhBE
+      - PayPalSettings__Mode=sandbox
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:5004
 

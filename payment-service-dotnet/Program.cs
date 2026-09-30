@@ -25,6 +25,11 @@ builder.Services.AddCors(options =>
 // Register Payment Service (MongoDB-backed)
 builder.Services.AddSingleton<IPaymentService, MongoPaymentService>();
 
+// Register PayPal Service
+builder.Services.Configure<PayPalSettings>(
+    builder.Configuration.GetSection("PayPalSettings"));
+builder.Services.AddHttpClient<IPayPalService, PayPalService>();
+
 // Controllers
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

@@ -24,24 +24,56 @@ services:
     environment:
       - ROOM_SERVICE_URL=http://room-service:5002
 
-  # ──────────────────────────────────────────
-  # Payment Service — .NET Core (C#) + MongoDB
-  # Replaces the old Node.js payment-service
-  # Same API endpoints: POST /api/payments, GET /api/payments/booking/:id
-  # ──────────────────────────────────────────
+  # ──────────────────────────────────────────────────────────────────────────
+  # SQL Server 2022 (Developer Edition — free for dev/test)
+  # The payment-service connects to this instead of MongoDB when
+  # StorageSettings__Provider=SqlServer is set.
+  # ──────────────────────────────────────────────────────────────────────────
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      # Password must meet SQL Server complexity rules (uppercase, digit, symbol)
+      # Change this before pushing to any shared environment.
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd123!
+    ports:
+      - "1433:1433"   # expose for local tools (e.g. SSMS, DataGrip)
+    volumes:
+      - sqlserver_data:/var/opt/mssql  # persist data across docker-compose restarts
+    healthcheck:
+      # Wait until SQL Server is actually accepting TCP connections before
+      # the payment-service starts (avoids migration race-condition on cold boot).
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'YourStrong@Passw0rd123!' -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Payment Service — ASP.NET Core 8 (C#)
+  # Storage: SQL Server via EF Core (Step 1)
+  # Existing endpoints unchanged: POST /api/payments, GET /api/payments/booking/:id
+  # ──────────────────────────────────────────────────────────────────────────
   payment-service:
     build: ./payment-service-dotnet
     ports:
       - "5004:5004"
     environment:
-      - MongoDbSettings__ConnectionString=mongodb+srv://chinthana:mypassword123@cluster0.153ofer.mongodb.net/hotel_payment_service
-      - MongoDbSettings__DatabaseName=hotel_payment_service
-      - MongoDbSettings__CollectionName=payments
+      # ── Storage: use SQL Server (EF Core) ────────────────────────────────
+      - StorageSettings__Provider=SqlServer
+      # Connection string injected via env — never hardcoded in source files.
+      # Format: Server=<host>;Database=<db>;User=<user>;Password=<pwd>;TrustServerCertificate=True
+      - ConnectionStrings__SqlServer=Server=sqlserver;Database=HotelPayments;User Id=sa;Password=YourStrong@Passw0rd123!;TrustServerCertificate=True
+      # ── PayPal (unchanged) ───────────────────────────────────────────────
       - PayPalSettings__ClientId=BAAnnvVaDaF0TyQ4vWjVT8TsnZLwUtv8eUrsYjiSxU6ppN-_rJEwgW2NLPRoctmKm8JCMnC6WkDhtI9ZYI
       - PayPalSettings__ClientSecret=ENwjbXhdwMHZGeHUX5hjzX-5wWT-IYwr49mC1njtzUYaCyphE-nNv36i4grpBS5IPl_Zr228QJL4MhBE
       - PayPalSettings__Mode=sandbox
-      - ASPNETCORE_ENVIRONMENT=Production
+      # Development → Swagger UI enabled, auto-migrate runs on startup
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5004
+    depends_on:
+      sqlserver:
+        condition: service_healthy  # wait for SQL Server healthcheck to pass
 
   review-service:
     build: ./review-service
@@ -107,3 +139,7 @@ services:
       - VITE_API_URL=http://api-gateway:5000
     depends_on:
       - api-gateway
+
+# ── Named volumes ───────────────────────────────────────────────────────────────
+volumes:
+  sqlserver_data:   # persists SQL Server data files across container restarts

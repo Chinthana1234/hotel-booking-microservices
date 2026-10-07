@@ -7,6 +7,7 @@ namespace PaymentService.Models
     /// Payment model — mirrors the existing Node.js Payment.js schema exactly
     /// so it reads/writes to the same MongoDB collection
     /// </summary>
+    [BsonIgnoreExtraElements]
     public class Payment
     {
         [BsonId]

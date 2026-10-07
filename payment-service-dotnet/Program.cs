@@ -187,3 +187,6 @@ app.MapGet("/", () =>
     $"Payment Service is running (.NET Core — storage: {storageProvider})");
 
 app.Run();
+
+// Make the Program class public so test projects can access it
+public partial class Program { }

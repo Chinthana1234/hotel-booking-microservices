@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using PaymentService.Models;
 using PaymentService.Services;
+using MassTransit;
+using PaymentService.Events;
 
 namespace PaymentService.Controllers
 {
@@ -13,12 +15,14 @@ namespace PaymentService.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IPayPalService _payPalService;
         private readonly ILogger<PaymentController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public PaymentController(IPaymentService paymentService, IPayPalService payPalService, ILogger<PaymentController> logger)
+        public PaymentController(IPaymentService paymentService, IPayPalService payPalService, ILogger<PaymentController> logger, IPublishEndpoint publishEndpoint)
         {
             _paymentService = paymentService;
             _payPalService = payPalService;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         /// <summary>
@@ -43,6 +47,13 @@ namespace PaymentService.Controllers
 
                 var payment = await _paymentService.ProcessPaymentAsync(request);
 
+                await _publishEndpoint.Publish<PaymentCompleted>(new
+                {
+                    PaymentId = payment.Id,
+                    BookingId = payment.BookingId,
+                    Status = payment.Status
+                });
+
                 return StatusCode(201, new ProcessPaymentResponse
                 {
                     Message = "Payment processed successfully",
@@ -52,6 +63,11 @@ namespace PaymentService.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Payment processing failed");
+                await _publishEndpoint.Publish<PaymentFailed>(new
+                {
+                    BookingId = request.BookingId,
+                    Reason = ex.Message
+                });
                 return StatusCode(500, new { message = "Payment processing failed", error = ex.Message });
             }
         }

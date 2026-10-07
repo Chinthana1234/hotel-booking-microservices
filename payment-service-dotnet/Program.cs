@@ -6,6 +6,8 @@ using PaymentService.Data;
 using PaymentService.Data.Repositories;
 using PaymentService.Models;
 using PaymentService.Services;
+using MassTransit;
+using PaymentService.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +85,32 @@ else
 builder.Services.Configure<PayPalSettings>(
     builder.Configuration.GetSection("PayPalSettings"));
 builder.Services.AddHttpClient<IPayPalService, PayPalService>();
+
+// ──────────────────────────────────────────────────────────────────────────────
+// MassTransit (RabbitMQ) Configuration
+// ──────────────────────────────────────────────────────────────────────────────
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<BookingConfirmedConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        var rabbitHost = builder.Configuration["RabbitMQ:Host"] ?? "localhost";
+        cfg.Host(rabbitHost, "/", h => {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        // The exact exchange routing key depends on how the publisher formats the urn.
+        // But for explicit queues:
+        cfg.ReceiveEndpoint("PaymentService.Events:BookingConfirmed", e =>
+        {
+            // Configure retries
+            e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
+            e.ConfigureConsumer<BookingConfirmedConsumer>(context);
+        });
+    });
+});
 
 // Controllers
 builder.Services.AddControllers()

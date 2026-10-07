@@ -120,6 +120,9 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
+// Health Checks
+builder.Services.AddHealthChecks();
+
 // Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -209,6 +212,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map Health Check Endpoint
+app.MapHealthChecks("/health");
 
 // Health check — shows which storage backend is active
 app.MapGet("/", () =>

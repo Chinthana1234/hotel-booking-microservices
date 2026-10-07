@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using PaymentService.Models;
 using PaymentService.Services;
 
@@ -6,6 +7,7 @@ namespace PaymentService.Controllers
 {
     [ApiController]
     [Route("api/payments")]
+    [Authorize]
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
@@ -57,6 +59,7 @@ namespace PaymentService.Controllers
         /// NOTE: Must be defined BEFORE /:bookingId route to avoid route conflict
         /// </summary>
         [HttpGet("admin/all")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> GetAllPayments()
         {
             try

@@ -56,6 +56,43 @@ namespace PaymentService.Models
     }
 
     /// <summary>
+    /// Response DTO for returning payment details to clients
+    /// </summary>
+    public class PaymentResponseDto
+    {
+        public string Id { get; set; } = string.Empty;
+        public string BookingId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
+        public double Amount { get; set; }
+        public string PaymentMethod { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string? PayPalOrderId { get; set; }
+        public string? PayPalCaptureId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+    }
+
+    public class ProcessPaymentResponse
+    {
+        public string Message { get; set; } = string.Empty;
+        public PaymentResponseDto Payment { get; set; } = null!;
+    }
+
+    public class PayPalCaptureData
+    {
+        public string OrderId { get; set; } = string.Empty;
+        public string? CaptureId { get; set; }
+        public string Status { get; set; } = string.Empty;
+    }
+
+    public class PayPalCapturePaymentResponse
+    {
+        public string Message { get; set; } = string.Empty;
+        public PaymentResponseDto Payment { get; set; } = null!;
+        public PayPalCaptureData Paypal { get; set; } = null!;
+    }
+
+    /// <summary>
     /// Request DTO for creating a PayPal order
     /// </summary>
     public class PayPalCreateOrderRequest

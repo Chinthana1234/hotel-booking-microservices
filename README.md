@@ -126,5 +126,33 @@ dotnet run
 
 ---
 
+## 📨 Event-Driven Architecture (RabbitMQ)
+
+When a booking is confirmed, it triggers an asynchronous event flow through RabbitMQ:
+
+```mermaid
+sequenceDiagram
+    participant B as Booking Service (Node.js)
+    participant RMQ as RabbitMQ
+    participant P as Payment Service (.NET)
+    participant DB as MongoDB / SQL Server
+
+    B->>RMQ: Publish BookingConfirmed Event
+    RMQ-->>P: Consume BookingConfirmed Event (MassTransit)
+    
+    rect rgb(200, 220, 240)
+        Note over P: Process Payment Logic (Retry handling)
+        P->>DB: Save Pending/Completed Payment
+    end
+    
+    alt Payment Successful
+        P->>RMQ: Publish PaymentCompleted Event
+    else Payment Failed
+        P->>RMQ: Publish PaymentFailed Event (Dead-Letter Queue)
+    end
+```
+
+---
+
 ## 📄 License
 MIT License.

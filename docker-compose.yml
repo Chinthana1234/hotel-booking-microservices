@@ -23,6 +23,7 @@ services:
       - ./booking-service/.env
     environment:
       - ROOM_SERVICE_URL=http://room-service:5002
+      - RABBITMQ_URL=amqp://rabbitmq:5672
 
   # ──────────────────────────────────────────────────────────────────────────
   # SQL Server 2022 (Developer Edition — free for dev/test)
@@ -71,9 +72,12 @@ services:
       # Development → Swagger UI enabled, auto-migrate runs on startup
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5004
+      - RabbitMQ__Host=rabbitmq
     depends_on:
       sqlserver:
         condition: service_healthy  # wait for SQL Server healthcheck to pass
+      rabbitmq:
+        condition: service_started
 
   review-service:
     build: ./review-service
@@ -139,6 +143,15 @@ services:
       - VITE_API_URL=http://api-gateway:5000
     depends_on:
       - api-gateway
+
+  # ──────────────────────────────────────────
+  # RabbitMQ Message Broker
+  # ──────────────────────────────────────────
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 # ── Named volumes ───────────────────────────────────────────────────────────────
 volumes:

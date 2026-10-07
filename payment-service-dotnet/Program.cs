@@ -1,10 +1,34 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using PaymentService.Data;
 using PaymentService.Data.Repositories;
 using PaymentService.Models;
 using PaymentService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var jwtSecret = builder.Configuration["JWT_SECRET"] ?? "supersecretkey12345678901234567890";
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSecret)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireAssertion(context => 
+        context.User.HasClaim(c => c.Type == "isAdmin" && c.Value.Equals("true", StringComparison.OrdinalIgnoreCase))));
+});
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Storage provider selection
@@ -126,6 +150,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

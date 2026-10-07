@@ -1,5 +1,6 @@
 const Booking = require('../models/Booking');
 const axios = require('axios');
+const { publishEvent } = require('../utils/rabbitmq');
 
 // @desc    Create new booking
 // @route   POST /api/bookings
@@ -43,8 +44,15 @@ const createBooking = async (req, res) => {
             totalPrice
         });
 
-        // 3. We no longer permanently update the room's availability to false.
-        // It remains true globally, and availability is determined dynamically by date.
+        // 3. Publish BookingConfirmed event to RabbitMQ
+        await publishEvent('PaymentService.Events:BookingConfirmed', '', {
+            eventType: 'BookingConfirmed',
+            bookingId: booking._id,
+            userId: booking.userId,
+            roomId: booking.roomId,
+            amount: booking.totalPrice,
+            timestamp: new Date().toISOString()
+        });
 
         res.status(201).json(booking);
     } catch (error) {

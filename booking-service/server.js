@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const { connectRabbitMQ } = require('./utils/rabbitmq');
 const bookingRoutes = require('./routes/bookingRoutes');
 
 // Load environment variables
@@ -12,6 +13,9 @@ dotenv.config();
 
 // Connect to MongoDB
 connectDB();
+
+// Connect to RabbitMQ
+connectRabbitMQ();
 
 const app = express();
 

@@ -26,6 +26,9 @@ namespace PaymentService.Controllers
         /// Process a new payment (non-PayPal methods like credit card)
         /// </summary>
         [HttpPost]
+        [ProducesResponseType(typeof(ProcessPaymentResponse), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> ProcessPayment([FromBody] ProcessPaymentRequest request)
         {
             try
@@ -40,10 +43,10 @@ namespace PaymentService.Controllers
 
                 var payment = await _paymentService.ProcessPaymentAsync(request);
 
-                return StatusCode(201, new
+                return StatusCode(201, new ProcessPaymentResponse
                 {
-                    message = "Payment processed successfully",
-                    payment
+                    Message = "Payment processed successfully",
+                    Payment = MapToDto(payment)
                 });
             }
             catch (Exception ex)
@@ -60,12 +63,15 @@ namespace PaymentService.Controllers
         /// </summary>
         [HttpGet("admin/all")]
         [Authorize(Policy = "AdminOnly")]
+        [ProducesResponseType(typeof(IEnumerable<PaymentResponseDto>), 200)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllPayments()
         {
             try
             {
                 var payments = await _paymentService.GetAllPaymentsAsync();
-                return Ok(payments);
+                var dtos = payments.Select(MapToDto);
+                return Ok(dtos);
             }
             catch (Exception ex)
             {
@@ -79,6 +85,9 @@ namespace PaymentService.Controllers
         /// Get payment details by booking ID
         /// </summary>
         [HttpGet("booking/{bookingId}")]
+        [ProducesResponseType(typeof(PaymentResponseDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetPaymentByBooking(string bookingId)
         {
             try
@@ -90,7 +99,7 @@ namespace PaymentService.Controllers
                     return NotFound(new { message = "No payment found for this booking" });
                 }
 
-                return Ok(payment);
+                return Ok(MapToDto(payment));
             }
             catch (Exception ex)
             {
@@ -108,6 +117,9 @@ namespace PaymentService.Controllers
         /// Create a PayPal order — frontend calls this, then opens PayPal popup
         /// </summary>
         [HttpPost("paypal/create-order")]
+        [ProducesResponseType(typeof(PayPalCreateOrderResponse), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> CreatePayPalOrder([FromBody] PayPalCreateOrderRequest request)
         {
             try
@@ -138,6 +150,9 @@ namespace PaymentService.Controllers
         /// Capture a PayPal order after user approval — saves payment to MongoDB
         /// </summary>
         [HttpPost("paypal/capture-order")]
+        [ProducesResponseType(typeof(PayPalCapturePaymentResponse), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> CapturePayPalOrder([FromBody] PayPalCaptureOrderRequest request)
         {
             try
@@ -168,15 +183,15 @@ namespace PaymentService.Controllers
                     PaymentMethod = "PayPal"
                 }, captureResult.OrderId, captureResult.CaptureId);
 
-                return StatusCode(201, new
+                return StatusCode(201, new PayPalCapturePaymentResponse
                 {
-                    message = "PayPal payment captured successfully",
-                    payment,
-                    paypal = new
+                    Message = "PayPal payment captured successfully",
+                    Payment = MapToDto(payment),
+                    Paypal = new PayPalCaptureData
                     {
-                        orderId = captureResult.OrderId,
-                        captureId = captureResult.CaptureId,
-                        status = captureResult.Status
+                        OrderId = captureResult.OrderId,
+                        CaptureId = captureResult.CaptureId,
+                        Status = captureResult.Status
                     }
                 });
             }
@@ -185,6 +200,23 @@ namespace PaymentService.Controllers
                 _logger.LogError(ex, "PayPal capture failed for order {OrderId}", request.OrderId);
                 return StatusCode(500, new { message = "Failed to capture PayPal payment", error = ex.Message });
             }
+        }
+
+        private PaymentResponseDto MapToDto(Payment payment)
+        {
+            return new PaymentResponseDto
+            {
+                Id = payment.Id ?? string.Empty,
+                BookingId = payment.BookingId,
+                UserId = payment.UserId,
+                Amount = payment.Amount,
+                PaymentMethod = payment.PaymentMethod,
+                Status = payment.Status,
+                PayPalOrderId = payment.PayPalOrderId,
+                PayPalCaptureId = payment.PayPalCaptureId,
+                CreatedAt = payment.CreatedAt,
+                UpdatedAt = payment.UpdatedAt
+            };
         }
     }
 }
